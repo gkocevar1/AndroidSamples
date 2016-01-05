@@ -34,6 +34,9 @@ namespace App1
 			// aapt resource value: 0x7f040000
 			public const int animate_android = 2130968576;
 			
+			// aapt resource value: 0x7f040001
+			public const int animate_android_reverse = 2130968577;
+			
 			static Animation()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -100,6 +103,9 @@ namespace App1
 			// aapt resource value: 0x7f060001
 			public const int MyButton = 2131099649;
 			
+			// aapt resource value: 0x7f060002
+			public const int MyButton2 = 2131099650;
+			
 			// aapt resource value: 0x7f060000
 			public const int animated_android = 2131099648;
 			
@@ -132,11 +138,14 @@ namespace App1
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int ApplicationName = 2131034113;
+			// aapt resource value: 0x7f050002
+			public const int ApplicationName = 2131034114;
 			
 			// aapt resource value: 0x7f050000
-			public const int Hello = 2131034112;
+			public const int ClickArea1 = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int ClickArea2 = 2131034113;
 			
 			static String()
 			{

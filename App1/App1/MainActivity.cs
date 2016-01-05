@@ -24,8 +24,22 @@ namespace App1
             // Get our button from the layout resource,
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.MyButton);
+            button.Click += delegate 
+            {
+                ImageView imageView = FindViewById<ImageView>(Resource.Id.animated_android);
+                imageView.SetImageResource(Resource.Animation.animate_android);
+                AnimationDrawable animation = (AnimationDrawable)imageView.Drawable;
+                animation.Start();
+            };
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            Button button2 = FindViewById<Button>(Resource.Id.MyButton2);
+            button2.Click += delegate 
+            {
+                ImageView imageView = FindViewById<ImageView>(Resource.Id.animated_android);
+                imageView.SetImageResource(Resource.Animation.animate_android_reverse);
+                AnimationDrawable animation = (AnimationDrawable)imageView.Drawable;
+                animation.Start();
+            };
         }
 
         public override void OnWindowFocusChanged(bool hasFocus)
