@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationDrawableCallback.cs" />
+    <Compile Include="SceneAnimation.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,43 +61,64 @@
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0000_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0001_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0002_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0003_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0004_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0005_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0006_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0007_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0008_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0009_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0010_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0011_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0012_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0013_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0014_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss0015_01_min.png" />
     <AndroidResource Include="Resources\layout\Main.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_6.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\android_7.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\anim\animate_android.xml" />
+    <AndroidResource Include="Resources\anim\animate_android.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\anim\animate_android_reverse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\kiss_01_1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\android_7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

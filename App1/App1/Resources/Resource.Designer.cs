@@ -37,6 +37,9 @@ namespace App1
 			// aapt resource value: 0x7f040001
 			public const int animate_android_reverse = 2130968577;
 			
+			// aapt resource value: 0x7f040002
+			public const int kiss_01_1 = 2130968578;
+			
 			static Animation()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -87,6 +90,54 @@ namespace App1
 			// aapt resource value: 0x7f020007
 			public const int Icon = 2130837511;
 			
+			// aapt resource value: 0x7f020008
+			public const int kiss0000_01_min = 2130837512;
+			
+			// aapt resource value: 0x7f020009
+			public const int kiss0001_01_min = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int kiss0002_01_min = 2130837514;
+			
+			// aapt resource value: 0x7f02000b
+			public const int kiss0003_01_min = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int kiss0004_01_min = 2130837516;
+			
+			// aapt resource value: 0x7f02000d
+			public const int kiss0005_01_min = 2130837517;
+			
+			// aapt resource value: 0x7f02000e
+			public const int kiss0006_01_min = 2130837518;
+			
+			// aapt resource value: 0x7f02000f
+			public const int kiss0007_01_min = 2130837519;
+			
+			// aapt resource value: 0x7f020010
+			public const int kiss0008_01_min = 2130837520;
+			
+			// aapt resource value: 0x7f020011
+			public const int kiss0009_01_min = 2130837521;
+			
+			// aapt resource value: 0x7f020012
+			public const int kiss0010_01_min = 2130837522;
+			
+			// aapt resource value: 0x7f020013
+			public const int kiss0011_01_min = 2130837523;
+			
+			// aapt resource value: 0x7f020014
+			public const int kiss0012_01_min = 2130837524;
+			
+			// aapt resource value: 0x7f020015
+			public const int kiss0013_01_min = 2130837525;
+			
+			// aapt resource value: 0x7f020016
+			public const int kiss0014_01_min = 2130837526;
+			
+			// aapt resource value: 0x7f020017
+			public const int kiss0015_01_min = 2130837527;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -99,12 +150,6 @@ namespace App1
 		
 		public partial class Id
 		{
-			
-			// aapt resource value: 0x7f060001
-			public const int MyButton = 2131099649;
-			
-			// aapt resource value: 0x7f060002
-			public const int MyButton2 = 2131099650;
 			
 			// aapt resource value: 0x7f060000
 			public const int animated_android = 2131099648;

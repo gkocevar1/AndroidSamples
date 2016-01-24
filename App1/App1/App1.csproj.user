@@ -3,5 +3,6 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
     <AndroidDesignerPreferredDevice>Nexus 10</AndroidDesignerPreferredDevice>
+    <SelectedDevice>Samsung GT-I9505</SelectedDevice>
   </PropertyGroup>
 </Project>
