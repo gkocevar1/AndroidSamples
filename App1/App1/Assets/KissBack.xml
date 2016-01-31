@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+  <item android:drawable="@drawable/kiss_back_03_0000_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0001_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0002_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0003_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0004_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0005_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0006_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0007_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0008_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0009_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0010_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0011_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0012_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0013_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0014_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0015_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0016_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0017_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0018_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0019_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0020_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0021_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0022_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0023_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0024_min" android:duration="66" />
+  <item android:drawable="@drawable/kiss_back_03_0025_min" android:duration="66" />
+</animation-list>

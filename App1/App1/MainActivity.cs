@@ -8,6 +8,10 @@ using Android.OS;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Content.Res;
+using System.Threading;
+using System.IO;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace App1
 {
@@ -15,45 +19,49 @@ namespace App1
     public class MainActivity : Activity
     {
         #region mTapScreenTextAnimRes
-        private int[] mTapScreenTextAnimRes =
-        {
-            Resource.Drawable.kiss0000_01_min,
-            Resource.Drawable.kiss0001_01_min,
-            Resource.Drawable.kiss0002_01_min,
-            Resource.Drawable.kiss0003_01_min,
-            Resource.Drawable.kiss0004_01_min,
-            Resource.Drawable.kiss0005_01_min,
-            Resource.Drawable.kiss0006_01_min,
-            Resource.Drawable.kiss0007_01_min,
-            Resource.Drawable.kiss0008_01_min,
-            Resource.Drawable.kiss0009_01_min,
-            Resource.Drawable.kiss0010_01_min,
-            Resource.Drawable.kiss0011_01_min,
-            Resource.Drawable.kiss0012_01_min,
-            Resource.Drawable.kiss0013_01_min,
-            Resource.Drawable.kiss0014_01_min,
-            Resource.Drawable.kiss0015_01_min
-        };
-        private int[] mTapScreenTextAnimRes1 =
-        {
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66,
-            66
-        }; 
+        //private int[] mTapScreenTextAnimRes =
+        //{
+        //    Resource.Drawable.kiss0000_01_min,
+        //    Resource.Drawable.kiss0001_01_min,
+        //    Resource.Drawable.kiss0002_01_min,
+        //    Resource.Drawable.kiss0003_01_min,
+        //    Resource.Drawable.kiss0004_01_min,
+        //    Resource.Drawable.kiss0005_01_min,
+        //    Resource.Drawable.kiss0006_01_min,
+        //    Resource.Drawable.kiss0007_01_min,
+        //    Resource.Drawable.kiss0008_01_min,
+        //    Resource.Drawable.kiss0009_01_min,
+        //    Resource.Drawable.kiss0010_01_min,
+        //    Resource.Drawable.kiss0011_01_min,
+        //    Resource.Drawable.kiss0012_01_min,
+        //    Resource.Drawable.kiss0013_01_min,
+        //    Resource.Drawable.kiss0014_01_min,
+        //    Resource.Drawable.kiss0015_01_min
+        //};
+        //private int[] mTapScreenTextAnimRes1 =
+        //{
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66,
+        //    66
+        //};
         #endregion
+
+        private ImageView _mainImageView;
+        private TextView _statusTextView;
+        private int _headCounter = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -62,44 +70,310 @@ namespace App1
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
+            _statusTextView.Text = "Status: init";
+
+            _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
+            _mainImageView.Touch += _mainImageView_Touch;
+
+            CacheImages();
+
+            //_mainImageView.SetBackgroundResource(Resource.Drawable.background);
+
             // sample 1
-            ImageView imageView = FindViewById<ImageView>(Resource.Id.animated_android);
+
             //new SceneAnimation(imageView, mTapScreenTextAnimRes, mTapScreenTextAnimRes1);
 
             // sample 2
-            var animation = CreateLoadingAnimationDrawable();
-            imageView.SetImageDrawable(animation);
-            
-            animation.Start();
+            //var animation = CreateLoadingAnimationDrawable();
+            //_mainImageView.SetImageDrawable(animation);
 
-            
-            
+            //animation.Start();
+
         }
 
-        protected AnimationDrawable CreateLoadingAnimationDrawable()
+        private float _startX = 0;
+        private float _startY = 0;
+        private float _tempY = 0;
+        
+        private JavaList<AnimationDetails> _animations = new JavaList<AnimationDetails>();
+
+        private void _mainImageView_Touch(object sender, View.TouchEventArgs e)
         {
-            AnimationDrawable animation = new AnimationDrawable();
-            animation.OneShot = true;
-
-            for (int i = 0; i < 15; i++)
+            switch (e.Event.Action)
             {
-                int index = i;
-                string stringIndex = index.ToString("00");
-                string bitmapStringId = "kiss00" + stringIndex + "_01_min";
-                int resID = this.Resources.GetIdentifier(bitmapStringId, "drawable", this.PackageName);
+                case MotionEventActions.Down:
+                    _statusTextView.Text = "Status: action down.";
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.InJustDecodeBounds = false;
-                options.InPreferredConfig = Bitmap.Config.Rgb565;
-                options.InDither = true;
+                    _startX = e.Event.GetX();
+                    _startY = e.Event.GetY();
+                    break;
 
-                Bitmap bitmap = BitmapFactory.DecodeResource(this.Resources, resID, options);
-                BitmapDrawable frame = new BitmapDrawable(bitmap);
-                
-                animation.AddFrame(frame, 66);
+                //case MotionEventActions.Scroll:
+                //    _statusTextView.Text = "Status: action scroll.";
+                //    Thread.Sleep(1000);
+                //    break;
+
+                case MotionEventActions.Move:
+                    _statusTextView.Text = "Status: action move.";
+                    
+                    _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
+
+                    MoveAction(e.Event.GetX(), e.Event.GetY());
+
+                    _tempY = e.Event.GetY();
+
+                    break;
+
+                case MotionEventActions.Up:
+                    _statusTextView.Text = "Status: action up.";
+
+
+                    _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
+
+                    if (_pullDownInProgress)
+                    {
+                        _pullDownInProgress = false;
+                        _mainImageView.SetImageResource(Resource.Drawable.background);
+                        _startX = 0;
+                        _startY = 0;
+                    }
+                    else
+                    {
+                        // touch only
+
+                        // head - x: 360 - 700 ; y: 150 - 460
+
+                        float x = e.Event.GetX();
+                        float y = e.Event.GetY();
+                        if (x >= 360 && x <= 700 && y >= 150 && y <= 460)
+                        {
+                            try
+                            {
+                                var anim = _headCounter % 2 == 0 ? Animation.Kiss1 : Animation.Kiss2;
+                                if (++_headCounter == 2)
+                                {
+                                    anim = Animation.KissBack;
+                                    _headCounter = 0;
+                                }
+
+                                var animation = CreateLoadingAnimationDrawable(anim);
+                                _mainImageView.SetImageDrawable(animation);
+                                animation.Start();
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                    }
+                    
+
+
+                    break;
+            }
+        }
+
+        bool _pullDownInProgress = false;
+        private void MoveAction(float x, float y)
+        {
+            // x: 440 - 640
+            // y: 520 - 640 ; 120 / 8 = 15
+
+            //--------------
+            //-            -
+            //-  p1---p2   -
+            //-  p3---p4   -
+            //-            -
+            //-            -
+            //-            -
+            //-            -
+            //--------------
+
+            // 8 pictures by 15 px
+
+            // valid rect: p1(440, 520), p2(640, 520), p3(440, 640), p4(640, 640)
+
+
+            if (!_pullDownInProgress && (x >= 440 && x <= 640) && (y >= 520 && y <= 535))
+            {
+                _statusTextView.Text += " - inside the starting range";
+
+                _pullDownInProgress = true;
+            }
+            else if (_pullDownInProgress)
+            {
+                _statusTextView.Text += " - in progress...";
+                if ((y - _tempY) > 0)
+                {
+                    //direction = Direction.Down;
+                    _statusTextView.Text += " DOWN";
+
+                    ChangePicture(y, true);
+                }
+                else if ((y - _tempY) < 0)
+                {
+                    //direction = Direction.Up;
+                    _statusTextView.Text += " UP";
+
+                    ChangePicture(y, false);
+                }
+
+                // none
+            }
+            else
+            {
+                _statusTextView.Text += " - out side from the valid range";
+            }
+        }
+
+        private int _pullShirtDownPicture = 0;
+        private void ChangePicture(float y, bool down)
+        {
+            // 520
+            int start = 520;
+
+            int result = ((int)y - start);
+            int pullShirtDownPicture = (int)(Math.Floor((double)(result / 15)));
+
+            if (pullShirtDownPicture == _pullShirtDownPicture || pullShirtDownPicture < 0 || pullShirtDownPicture > 7)
+            {
+                return;
             }
 
-            return animation;
+            _pullShirtDownPicture = pullShirtDownPicture;
+
+            string bitmapStringId = string.Format("pull_shirt_down_000{0}_min", pullShirtDownPicture);
+            int resID = this.Resources.GetIdentifier(bitmapStringId, "drawable", this.PackageName);
+
+            _mainImageView.SetImageResource(resID);
+        }
+
+        private AnimationDrawable CreateLoadingAnimationDrawable(Animation animation)
+        {
+            ClearAnimation();
+            
+            var animationDetails = _animations.FirstOrDefault(x => x.Animation == animation);
+
+            var animationDrawable = new AnimationDrawable
+            {
+                OneShot = animationDetails.OneShot
+            };
+
+            foreach (var ad in animationDetails.Frames)
+            {
+                BitmapDrawable frame = new BitmapDrawable(ad.Bitmap);
+                animationDrawable.AddFrame(frame, ad.Duration);
+            }
+               
+            return animationDrawable;
+        }
+
+        
+
+        private void ClearAnimation()
+        {
+            var animation = _mainImageView.Drawable as AnimationDrawable;
+            if (animation == null)
+            {
+                return;
+            }
+
+            animation.Stop();
+
+            _mainImageView.SetImageResource(Resource.Drawable.background);
+
+            if (animation.NumberOfFrames > 0)
+            {
+                for (int i = 0; i < animation.NumberOfFrames; ++i)
+                {
+                    BitmapDrawable frame = animation.GetFrame(i) as BitmapDrawable;
+                    if (frame != null)
+                    {
+                        //Bitmap bitmap = frame.Bitmap;
+                        //bitmap.Recycle();
+                        //bitmap.Dispose();
+
+                        frame.SetCallback(null);
+                    }
+                }
+
+                animation.SetCallback(null);
+                animation = null;
+            }
+        }
+
+        private void CacheImages()
+        {
+            try
+            {
+                foreach (Animation item in Enum.GetValues(typeof(Animation)))
+                {
+                    var animationDetails = BuildAnimationBitmaps(item);
+                    _animations.Add(animationDetails);
+                }
+            }
+            catch (Exception ex)
+            {
+                // TODO: log somewhere
+            }
+        }
+
+        private AnimationDetails BuildAnimationBitmaps(Animation animation)
+        {
+            var animationDetails = new AnimationDetails
+            {
+                Animation = animation
+            };
+
+            using (var stream = new StreamReader(Assets.Open(string.Format("{0}.xml", animation))))
+            {
+                var document = XDocument.Load(stream);
+                var root = document.Root;
+
+                // set oneshot flag
+                animationDetails.OneShot = bool.Parse(ReadAttribute(root, "oneshot"));
+                var elements = root.Descendants();
+                
+                foreach (var element in elements)
+                {
+                    var drawable = ReadAttribute(element, "drawable");
+                    var duration = ReadAttribute(element, "duration");
+
+                    var bitmapStringId = drawable.Substring(drawable.IndexOf('/') + 1);
+                    var resID = Resources.GetIdentifier(bitmapStringId, "drawable", PackageName);
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.InJustDecodeBounds = false;
+                    options.InPreferredConfig = Bitmap.Config.Rgb565;
+                    options.InDither = true;
+
+                    using (Bitmap bitmap = BitmapFactory.DecodeResource(Resources, resID, options))
+                    {
+                        var frame = new FrameInfo
+                        {
+                            Bitmap = bitmap,
+                            Duration = int.Parse(duration)
+                        };
+                        animationDetails.Frames.Add(frame);
+                    }
+                }
+            }
+
+            return animationDetails;
+        }
+
+        private string ReadAttribute(XElement element, string attributeName)
+        {
+            const string nameSpace = "http://schemas.android.com/apk/res/android";
+
+            var attribute = element.Attribute(XName.Get(attributeName, nameSpace));
+            if (attribute == null)
+            {
+                return null;
+            }
+
+            return attribute.Value;
         }
 
         #region Comment
@@ -147,17 +421,92 @@ namespace App1
 
         //    return inSampleSize;
         //}
-
-        //public override void OnWindowFocusChanged(bool hasFocus)
-        //{
-        //    //if (hasFocus)
-        //    //{
-        //    //    ImageView imageView = FindViewById<ImageView>(Resource.Id.animated_android);
-        //    //    AnimationDrawable animation = (AnimationDrawable)imageView.Drawable;
-        //    //    animation.Start();
-        //    //}
-        //} 
         #endregion
+    }
+
+    /// <summary>
+    /// Animation enumeration
+    /// </summary>
+    public enum Animation
+    {
+        /// <summary>
+        /// The Kiss1
+        /// </summary>
+        Kiss1,
+
+        /// <summary>
+        /// The Kiss2
+        /// </summary>
+        Kiss2,
+
+        /// <summary>
+        /// The kiss back
+        /// </summary>
+        KissBack,
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class AnimationDetails
+    {
+        /// <summary>
+        /// Gets or sets the animation.
+        /// </summary>
+        /// <value>
+        /// The animation.
+        /// </value>
+        public Animation Animation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [one shot].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [one shot]; otherwise, <c>false</c>.
+        /// </value>
+        public bool OneShot { get; set; }
+
+        private JavaList<FrameInfo> _frames;
+        /// <summary>
+        /// Gets the frames.
+        /// </summary>
+        /// <value>
+        /// The frames.
+        /// </value>
+        public JavaList<FrameInfo> Frames
+        {
+            get
+            {
+                if (_frames == null)
+                {
+                    _frames = new JavaList<FrameInfo>();
+                }
+
+                return _frames;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FrameInfo
+    {
+        /// <summary>
+        /// Gets or sets the bitmap.
+        /// </summary>
+        /// <value>
+        /// The bitmap.
+        /// </value>
+        public Bitmap Bitmap { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration.
+        /// </summary>
+        /// <value>
+        /// The duration.
+        /// </value>
+        public int Duration { get; set; }
     }
 }
 

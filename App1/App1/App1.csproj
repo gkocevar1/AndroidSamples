@@ -61,22 +61,22 @@
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0000_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0001_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0002_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0003_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0004_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0005_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0006_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0007_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0008_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0009_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0010_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0011_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0012_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0013_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0014_01_min.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\kiss0015_01_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0000_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0001_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0002_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0003_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0004_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0005_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0006_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0007_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0008_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0009_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0010_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0011min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0012_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0013_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0014_min.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_01_0015_min.png" />
     <AndroidResource Include="Resources\layout\Main.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -86,39 +86,172 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\anim\animate_android.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\anim\animate_android_reverse.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\anim\kiss_01_1.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_6.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\android_7.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0000_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0001_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0002_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0003_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0004_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0005_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0006_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\pull_shirt_down_0007_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Kiss1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\anim\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Kiss2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0000_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0001_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0002_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0003_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0004_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0005_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0006_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0007_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0008_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0009_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0010_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0011_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0012_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0013_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0014_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_02_0015_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0000_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0001_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0002_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0003_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0004_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0005_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0006_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0007_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0008_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0009_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0010_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0011_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0012_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0013_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0014_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0015_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0016_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0017_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0018_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0019_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0020_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0021_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0022_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0023_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0024_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\kiss_back_03_0025_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\KissBack.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

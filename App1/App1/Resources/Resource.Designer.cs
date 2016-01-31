@@ -28,28 +28,6 @@ namespace App1
 		{
 		}
 		
-		public partial class Animation
-		{
-			
-			// aapt resource value: 0x7f040000
-			public const int animate_android = 2130968576;
-			
-			// aapt resource value: 0x7f040001
-			public const int animate_android_reverse = 2130968577;
-			
-			// aapt resource value: 0x7f040002
-			public const int kiss_01_1 = 2130968578;
-			
-			static Animation()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Animation()
-			{
-			}
-		}
-		
 		public partial class Attribute
 		{
 			
@@ -67,76 +45,208 @@ namespace App1
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int android_1 = 2130837504;
+			public const int background = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int android_2 = 2130837505;
+			public const int Icon = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int android_3 = 2130837506;
+			public const int kiss_01_0000_min = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int android_4 = 2130837507;
+			public const int kiss_01_0001_min = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int android_5 = 2130837508;
+			public const int kiss_01_0002_min = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int android_6 = 2130837509;
+			public const int kiss_01_0003_min = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int android_7 = 2130837510;
+			public const int kiss_01_0004_min = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int Icon = 2130837511;
+			public const int kiss_01_0005_min = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int kiss0000_01_min = 2130837512;
+			public const int kiss_01_0006_min = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int kiss0001_01_min = 2130837513;
+			public const int kiss_01_0007_min = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int kiss0002_01_min = 2130837514;
+			public const int kiss_01_0008_min = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int kiss0003_01_min = 2130837515;
+			public const int kiss_01_0009_min = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int kiss0004_01_min = 2130837516;
+			public const int kiss_01_0010_min = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int kiss0005_01_min = 2130837517;
+			public const int kiss_01_0011min = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int kiss0006_01_min = 2130837518;
+			public const int kiss_01_0012_min = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int kiss0007_01_min = 2130837519;
+			public const int kiss_01_0013_min = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int kiss0008_01_min = 2130837520;
+			public const int kiss_01_0014_min = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int kiss0009_01_min = 2130837521;
+			public const int kiss_01_0015_min = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int kiss0010_01_min = 2130837522;
+			public const int kiss_02_0000_min = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int kiss0011_01_min = 2130837523;
+			public const int kiss_02_0001_min = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int kiss0012_01_min = 2130837524;
+			public const int kiss_02_0002_min = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int kiss0013_01_min = 2130837525;
+			public const int kiss_02_0003_min = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int kiss0014_01_min = 2130837526;
+			public const int kiss_02_0004_min = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int kiss0015_01_min = 2130837527;
+			public const int kiss_02_0005_min = 2130837527;
+			
+			// aapt resource value: 0x7f020018
+			public const int kiss_02_0006_min = 2130837528;
+			
+			// aapt resource value: 0x7f020019
+			public const int kiss_02_0007_min = 2130837529;
+			
+			// aapt resource value: 0x7f02001a
+			public const int kiss_02_0008_min = 2130837530;
+			
+			// aapt resource value: 0x7f02001b
+			public const int kiss_02_0009_min = 2130837531;
+			
+			// aapt resource value: 0x7f02001c
+			public const int kiss_02_0010_min = 2130837532;
+			
+			// aapt resource value: 0x7f02001d
+			public const int kiss_02_0011_min = 2130837533;
+			
+			// aapt resource value: 0x7f02001e
+			public const int kiss_02_0012_min = 2130837534;
+			
+			// aapt resource value: 0x7f02001f
+			public const int kiss_02_0013_min = 2130837535;
+			
+			// aapt resource value: 0x7f020020
+			public const int kiss_02_0014_min = 2130837536;
+			
+			// aapt resource value: 0x7f020021
+			public const int kiss_02_0015_min = 2130837537;
+			
+			// aapt resource value: 0x7f020022
+			public const int kiss_back_03_0000_min = 2130837538;
+			
+			// aapt resource value: 0x7f020023
+			public const int kiss_back_03_0001_min = 2130837539;
+			
+			// aapt resource value: 0x7f020024
+			public const int kiss_back_03_0002_min = 2130837540;
+			
+			// aapt resource value: 0x7f020025
+			public const int kiss_back_03_0003_min = 2130837541;
+			
+			// aapt resource value: 0x7f020026
+			public const int kiss_back_03_0004_min = 2130837542;
+			
+			// aapt resource value: 0x7f020027
+			public const int kiss_back_03_0005_min = 2130837543;
+			
+			// aapt resource value: 0x7f020028
+			public const int kiss_back_03_0006_min = 2130837544;
+			
+			// aapt resource value: 0x7f020029
+			public const int kiss_back_03_0007_min = 2130837545;
+			
+			// aapt resource value: 0x7f02002a
+			public const int kiss_back_03_0008_min = 2130837546;
+			
+			// aapt resource value: 0x7f02002b
+			public const int kiss_back_03_0009_min = 2130837547;
+			
+			// aapt resource value: 0x7f02002c
+			public const int kiss_back_03_0010_min = 2130837548;
+			
+			// aapt resource value: 0x7f02002d
+			public const int kiss_back_03_0011_min = 2130837549;
+			
+			// aapt resource value: 0x7f02002e
+			public const int kiss_back_03_0012_min = 2130837550;
+			
+			// aapt resource value: 0x7f02002f
+			public const int kiss_back_03_0013_min = 2130837551;
+			
+			// aapt resource value: 0x7f020030
+			public const int kiss_back_03_0014_min = 2130837552;
+			
+			// aapt resource value: 0x7f020031
+			public const int kiss_back_03_0015_min = 2130837553;
+			
+			// aapt resource value: 0x7f020032
+			public const int kiss_back_03_0016_min = 2130837554;
+			
+			// aapt resource value: 0x7f020033
+			public const int kiss_back_03_0017_min = 2130837555;
+			
+			// aapt resource value: 0x7f020034
+			public const int kiss_back_03_0018_min = 2130837556;
+			
+			// aapt resource value: 0x7f020035
+			public const int kiss_back_03_0019_min = 2130837557;
+			
+			// aapt resource value: 0x7f020036
+			public const int kiss_back_03_0020_min = 2130837558;
+			
+			// aapt resource value: 0x7f020037
+			public const int kiss_back_03_0021_min = 2130837559;
+			
+			// aapt resource value: 0x7f020038
+			public const int kiss_back_03_0022_min = 2130837560;
+			
+			// aapt resource value: 0x7f020039
+			public const int kiss_back_03_0023_min = 2130837561;
+			
+			// aapt resource value: 0x7f02003a
+			public const int kiss_back_03_0024_min = 2130837562;
+			
+			// aapt resource value: 0x7f02003b
+			public const int kiss_back_03_0025_min = 2130837563;
+			
+			// aapt resource value: 0x7f02003c
+			public const int pull_shirt_down_0000_min = 2130837564;
+			
+			// aapt resource value: 0x7f02003d
+			public const int pull_shirt_down_0001_min = 2130837565;
+			
+			// aapt resource value: 0x7f02003e
+			public const int pull_shirt_down_0002_min = 2130837566;
+			
+			// aapt resource value: 0x7f02003f
+			public const int pull_shirt_down_0003_min = 2130837567;
+			
+			// aapt resource value: 0x7f020040
+			public const int pull_shirt_down_0004_min = 2130837568;
+			
+			// aapt resource value: 0x7f020041
+			public const int pull_shirt_down_0005_min = 2130837569;
+			
+			// aapt resource value: 0x7f020042
+			public const int pull_shirt_down_0006_min = 2130837570;
+			
+			// aapt resource value: 0x7f020043
+			public const int pull_shirt_down_0007_min = 2130837571;
 			
 			static Drawable()
 			{
@@ -151,8 +261,11 @@ namespace App1
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int animated_android = 2131099648;
+			// aapt resource value: 0x7f050000
+			public const int animated_android = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int statusTextView = 2131034113;
 			
 			static Id()
 			{
@@ -183,14 +296,14 @@ namespace App1
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050002
-			public const int ApplicationName = 2131034114;
+			// aapt resource value: 0x7f040002
+			public const int ApplicationName = 2130968578;
 			
-			// aapt resource value: 0x7f050000
-			public const int ClickArea1 = 2131034112;
+			// aapt resource value: 0x7f040000
+			public const int ClickArea1 = 2130968576;
 			
-			// aapt resource value: 0x7f050001
-			public const int ClickArea2 = 2131034113;
+			// aapt resource value: 0x7f040001
+			public const int ClickArea2 = 2130968577;
 			
 			static String()
 			{
