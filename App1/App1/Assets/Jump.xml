@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+  <item android:drawable="@drawable/jump_09_0000_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0001_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0002_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0003_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0004_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0005_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0006_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0007_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0008_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0009_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0010_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0011_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0012_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0013_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0014_min" android:duration="66" />
+  <item android:drawable="@drawable/jump_09_0015_min" android:duration="66" />
+</animation-list>

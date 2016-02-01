@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+  <item android:drawable="@drawable/right_hand_poke_05_0000_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0001_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0002_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0003_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0004_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0005_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0006_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0007_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0008_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0009_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0010_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0011_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0012_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0013_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0014_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0015_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0016_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0017_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0018_min" android:duration="66" />
+  <item android:drawable="@drawable/right_hand_poke_05_0019_min" android:duration="66" />
+</animation-list>

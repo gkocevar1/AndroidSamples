@@ -8,14 +8,13 @@ using Android.OS;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Content.Res;
-using System.Threading;
 using System.IO;
 using System.Xml.Linq;
 using System.Linq;
 
 namespace App1
 {
-    [Activity(Label = "App1", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         #region mTapScreenTextAnimRes
@@ -62,6 +61,12 @@ namespace App1
         private ImageView _mainImageView;
         private TextView _statusTextView;
         private int _headCounter = 0;
+        private int _pullShirtDownPicture = 0;
+        private float _startX = 0;
+        private float _startY = 0;
+        private float _tempY = 0;
+        bool _pullDownInProgress = false;
+        private JavaList<AnimationDetails> _animations = new JavaList<AnimationDetails>();
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -77,27 +82,11 @@ namespace App1
             _mainImageView.Touch += _mainImageView_Touch;
 
             CacheImages();
-
-            //_mainImageView.SetBackgroundResource(Resource.Drawable.background);
-
-            // sample 1
-
+            
+            // second option
             //new SceneAnimation(imageView, mTapScreenTextAnimRes, mTapScreenTextAnimRes1);
-
-            // sample 2
-            //var animation = CreateLoadingAnimationDrawable();
-            //_mainImageView.SetImageDrawable(animation);
-
-            //animation.Start();
-
         }
-
-        private float _startX = 0;
-        private float _startY = 0;
-        private float _tempY = 0;
         
-        private JavaList<AnimationDetails> _animations = new JavaList<AnimationDetails>();
-
         private void _mainImageView_Touch(object sender, View.TouchEventArgs e)
         {
             switch (e.Event.Action)
@@ -109,14 +98,9 @@ namespace App1
                     _startY = e.Event.GetY();
                     break;
 
-                //case MotionEventActions.Scroll:
-                //    _statusTextView.Text = "Status: action scroll.";
-                //    Thread.Sleep(1000);
-                //    break;
-
                 case MotionEventActions.Move:
                     _statusTextView.Text = "Status: action move.";
-                    
+
                     _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
 
                     MoveAction(e.Event.GetX(), e.Event.GetY());
@@ -126,55 +110,82 @@ namespace App1
                     break;
 
                 case MotionEventActions.Up:
+                    { 
                     _statusTextView.Text = "Status: action up.";
 
 
                     _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
 
-                    if (_pullDownInProgress)
-                    {
-                        _pullDownInProgress = false;
-                        _mainImageView.SetImageResource(Resource.Drawable.background);
-                        _startX = 0;
-                        _startY = 0;
-                    }
-                    else
-                    {
-                        // touch only
-
-                        // head - x: 360 - 700 ; y: 150 - 460
-
-                        float x = e.Event.GetX();
-                        float y = e.Event.GetY();
-                        if (x >= 360 && x <= 700 && y >= 150 && y <= 460)
+                        if (_pullDownInProgress)
                         {
-                            try
+                            _pullDownInProgress = false;
+                            _mainImageView.SetImageResource(Resource.Drawable.background);
+                            _startX = 0;
+                            _startY = 0;
+                        }
+                        else
+                        {
+                            // touch only
+                            Animation anim = Animation.None;
+                            float x = e.Event.GetX();
+                            float y = e.Event.GetY();
+
+                            // head - x: 360 - 700 ; y: 150 - 460
+                            if (x >= 360 && x <= 700 && y >= 150 && y <= 460)
                             {
-                                var anim = _headCounter % 2 == 0 ? Animation.Kiss1 : Animation.Kiss2;
-                                if (++_headCounter == 2)
+
+                                anim = _headCounter % 2 == 0 ? Animation.Kiss1 : Animation.Kiss2;
+                                if (_headCounter++ == 3)
                                 {
                                     anim = Animation.KissBack;
-                                    _headCounter = 0;
                                 }
+                            }
+                            // jump - x: 370 - 700 ; y: 1380 - 1500
+                            else if (x >= 370 && x <= 700 && y >= 1380 && y <= 1500)
+                            {
+                                anim = Animation.Jump;
+                            }
+                            // right  hand poke - x: 320 - 430 ; y: 800 - 970
+                            else if (x >= 320 && x <= 430 && y >= 800 && y <= 970)
+                            {
+                                anim = Animation.RightHandPoke;
+                            }
+                            // left hand poke - x: 630 - 740 ; y: 800 - 970
+                            else if (x >= 630 && x <= 740 && y >= 800 && y <= 970)
+                            {
+                                anim = Animation.LeftHandPoke;
+                            }
+                            // poke under belly - x: 480 - 580 ; y: 770 - 870
+                            else if (x >= 480 && x <= 580 && y >= 770 && y <= 870)
+                            {
+                                anim = Animation.PokeUnderBelly;
+                            }
 
-                                var animation = CreateLoadingAnimationDrawable(anim);
-                                _mainImageView.SetImageDrawable(animation);
-                                animation.Start();
+                            if (anim != Animation.Kiss1 && anim != Animation.Kiss2)
+                            {
+                                _headCounter = 0;
+                            }
+
+                            try
+                            {
+                                if (anim != Animation.None)
+                                {
+                                    var animation = CreateLoadingAnimationDrawable2(anim);
+                                    _mainImageView.SetImageDrawable(animation);
+                                    animation.Start();
+                                }
                             }
                             catch (Exception ex)
                             {
-
+                                _statusTextView.Text = ex.ToString();
                             }
                         }
                     }
-                    
-
-
                     break;
             }
         }
 
-        bool _pullDownInProgress = false;
+        
         private void MoveAction(float x, float y)
         {
             // x: 440 - 640
@@ -227,7 +238,7 @@ namespace App1
             }
         }
 
-        private int _pullShirtDownPicture = 0;
+        
         private void ChangePicture(float y, bool down)
         {
             // 520
@@ -247,6 +258,68 @@ namespace App1
             int resID = this.Resources.GetIdentifier(bitmapStringId, "drawable", this.PackageName);
 
             _mainImageView.SetImageResource(resID);
+        }
+
+        private JavaDictionary<string, JavaList<Bitmap>> _animations2 = new JavaDictionary<string, JavaList<Bitmap>>();
+        private AnimationDrawable CreateLoadingAnimationDrawable2(Animation animation)
+        {
+            ClearAnimation();
+
+            var animationDrawable = new AnimationDrawable();
+            JavaList<Bitmap> bitmaps = new JavaList<Bitmap>();
+
+            if (_animations2.ContainsKey(animation.ToString()))
+            {
+                bitmaps = _animations2[animation.ToString()];
+
+                foreach (var bitmap in bitmaps)
+                {
+                    
+
+                    BitmapDrawable bd = new BitmapDrawable(bitmap);
+                    animationDrawable.AddFrame(bd, 66);
+                }
+
+                return animationDrawable;
+            }
+
+            using (var stream = new StreamReader(Assets.Open(string.Format("{0}.xml", animation))))
+            {
+                var document = XDocument.Load(stream);
+                var root = document.Root;
+
+                // set oneshot flag
+                animationDrawable.OneShot = bool.Parse(ReadAttribute(root, "oneshot"));
+                var elements = root.Descendants();
+
+                foreach (var element in elements)
+                {
+                    var drawable = ReadAttribute(element, "drawable");
+                    var duration = ReadAttribute(element, "duration");
+
+                    var bitmapStringId = drawable.Substring(drawable.IndexOf('/') + 1);
+                    var resID = Resources.GetIdentifier(bitmapStringId, "drawable", PackageName);
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.InJustDecodeBounds = false;
+                    options.InPreferredConfig = Bitmap.Config.Rgb565;
+                    options.InDither = true;
+                    options.InSampleSize = 2;
+                    options.InPurgeable = true;
+
+                    using (Bitmap bitmap = BitmapFactory.DecodeResource(Resources, resID, options))
+                    {
+                        bitmaps.Add(bitmap);
+
+                        BitmapDrawable bd = new BitmapDrawable(bitmap);
+                        animationDrawable.AddFrame(bd, int.Parse(duration));
+                    }
+                }
+
+                _animations2.Add(animation.ToString(), bitmaps);
+            }
+
+            return animationDrawable;
         }
 
         private AnimationDrawable CreateLoadingAnimationDrawable(Animation animation)
@@ -293,6 +366,7 @@ namespace App1
                         //Bitmap bitmap = frame.Bitmap;
                         //bitmap.Recycle();
                         //bitmap.Dispose();
+                        //bitmap = null;
 
                         frame.SetCallback(null);
                     }
@@ -309,8 +383,8 @@ namespace App1
             {
                 foreach (Animation item in Enum.GetValues(typeof(Animation)))
                 {
-                    var animationDetails = BuildAnimationBitmaps(item);
-                    _animations.Add(animationDetails);
+                    //var animationDetails = BuildAnimationBitmaps(item);
+                    //_animations.Add(animationDetails);
                 }
             }
             catch (Exception ex)
@@ -430,6 +504,11 @@ namespace App1
     public enum Animation
     {
         /// <summary>
+        /// The none{CC2D43FA-BBC4-448A-9D0B-7B57ADF2655C}
+        /// </summary>
+        None,
+
+        /// <summary>
         /// The Kiss1
         /// </summary>
         Kiss1,
@@ -443,6 +522,23 @@ namespace App1
         /// The kiss back
         /// </summary>
         KissBack,
+
+        Jump,
+
+        /// <summary>
+        /// The left hand poke
+        /// </summary>
+        LeftHandPoke,
+
+        /// <summary>
+        /// The right hand poke
+        /// </summary>
+        RightHandPoke,
+
+        /// <summary>
+        /// The poke under belly
+        /// </summary>
+        PokeUnderBelly
     }
 
     /// <summary>

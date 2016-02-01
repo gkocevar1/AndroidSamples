@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+  <item android:drawable="@drawable/poke_under_belly_06_0000_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0001_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0002_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0003_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0004_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0005_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0006_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0007_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0008_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0009_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0010_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0011_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0012_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0013_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0014_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0015_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0016_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0017_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0018_min" android:duration="66" />
+  <item android:drawable="@drawable/poke_under_belly_06_0019_min" android:duration="66" />
+</animation-list>

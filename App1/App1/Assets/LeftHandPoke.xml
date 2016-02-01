@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+  <item android:drawable="@drawable/left_hand_poke_04_0000_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0001_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0002_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0003_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0004_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0005_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0006_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0007_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0008_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0009_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0010_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0011_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0012_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0013_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0014_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0015_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0016_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0017_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0018_min" android:duration="66" />
+  <item android:drawable="@drawable/left_hand_poke_04_0019_min" android:duration="66" />
+</animation-list>
