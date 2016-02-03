@@ -1,7 +1,7 @@
 using Android.Widget;
 using Java.Lang;
 
-namespace App1
+namespace AppAngie
 {
     public class SceneAnimation
     {

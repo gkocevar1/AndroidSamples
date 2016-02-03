@@ -12,7 +12,7 @@
 //using Android.Widget;
 //using Java.Lang;
 
-//namespace App1
+//namespace AppAngie
 //{
 //    /**
 // * Provides a callback when a non-looping {@link AnimationDrawable} completes its animation sequence. More precisely,
@@ -67,7 +67,7 @@
 
 //        public void Dispose()
 //        {
-            
+
 //        }
 
 //        public void InvalidateDrawable(Drawable who)
