@@ -11,10 +11,11 @@ using Android.Content.Res;
 using System.IO;
 using System.Xml.Linq;
 using System.Linq;
+using Android.Content.PM;
 
 namespace App1
 {
-    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
     public class MainActivity : Activity
     {
         #region mTapScreenTextAnimRes
@@ -75,18 +76,34 @@ namespace App1
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            //ActionBar.Hide();
+            //NavigationPage.SetHasNavigationBar(this, false);
+
             _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
             _statusTextView.Text = "Status: init";
 
             _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
             _mainImageView.Touch += _mainImageView_Touch;
 
-            CacheImages();
-            
+            //CacheImages();
+
+            //var metrics = Resources.DisplayMetrics;
+            //var v = (int)metrics.DensityDpi;
+            //var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
+            //var heightInDp = ConvertPixelsToDp(metrics.HeightPixels);
+
+            //dp - Density - independent Pixels - an abstract unit that is based on the physical density of the screen.These units are relative to a 160 dpi screen, so one dp is one pixel on a 160 dpi screen. The ratio of dp-to-pixel will change with the screen density, but not necessarily in direct proportion. Note: The compiler accepts both "dip" and "dp", though "dp" is more consistent with "sp".
+
             // second option
             //new SceneAnimation(imageView, mTapScreenTextAnimRes, mTapScreenTextAnimRes1);
         }
-        
+
+        //private int ConvertPixelsToDp(float pixelValue)
+        //{
+        //    var dp = (int)((pixelValue) / Resources.DisplayMetrics.Density);
+        //    return dp;
+        //}
+
         private void _mainImageView_Touch(object sender, View.TouchEventArgs e)
         {
             switch (e.Event.Action)
@@ -110,11 +127,10 @@ namespace App1
                     break;
 
                 case MotionEventActions.Up:
-                    { 
-                    _statusTextView.Text = "Status: action up.";
-
-
-                    _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
+                    {
+                        _statusTextView.Text = "Status: action up.";
+                        _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();// + " xdp=" + ConvertPixelsToDp(e.Event.GetX()) + " ydp=" + ConvertPixelsToDp(e.Event.GetY());
+                       
 
                         if (_pullDownInProgress)
                         {
@@ -130,8 +146,18 @@ namespace App1
                             float x = e.Event.GetX();
                             float y = e.Event.GetY();
 
+                            var metrics = Resources.DisplayMetrics;
+
+                            var height = metrics.HeightPixels;
+                            var width = metrics.WidthPixels;
+
+                            var xPercents = (int)((x * 100) / width);
+                            var yPercents = (int)((y * 100) / height);
+
+                            _statusTextView.Text += " x=" + xPercents + "% y=" + yPercents + "%";
+
                             // head - x: 360 - 700 ; y: 150 - 460
-                            if (x >= 360 && x <= 700 && y >= 150 && y <= 460)
+                            if (IsHead(x, y))
                             {
 
                                 anim = _headCounter % 2 == 0 ? Animation.Kiss1 : Animation.Kiss2;
@@ -140,25 +166,25 @@ namespace App1
                                     anim = Animation.KissBack;
                                 }
                             }
-                            // jump - x: 370 - 700 ; y: 1380 - 1500
-                            else if (x >= 370 && x <= 700 && y >= 1380 && y <= 1500)
-                            {
-                                anim = Animation.Jump;
-                            }
                             // right  hand poke - x: 320 - 430 ; y: 800 - 970
-                            else if (x >= 320 && x <= 430 && y >= 800 && y <= 970)
+                            else if (IsRightHand(x, y))
                             {
                                 anim = Animation.RightHandPoke;
                             }
                             // left hand poke - x: 630 - 740 ; y: 800 - 970
-                            else if (x >= 630 && x <= 740 && y >= 800 && y <= 970)
+                            else if (IsLeftHand(x, y))
                             {
                                 anim = Animation.LeftHandPoke;
                             }
                             // poke under belly - x: 480 - 580 ; y: 770 - 870
-                            else if (x >= 480 && x <= 580 && y >= 770 && y <= 870)
+                            else if (IsBelly(x, y))
                             {
                                 anim = Animation.PokeUnderBelly;
+                            }
+                            // jump - x: 370 - 700 ; y: 1380 - 1500
+                            else if (IsFeet(x, y))
+                            {
+                                anim = Animation.Jump;
                             }
 
                             if (anim != Animation.Kiss1 && anim != Animation.Kiss2)
@@ -185,28 +211,55 @@ namespace App1
             }
         }
 
-        
+        private bool IsHead(float x, float y)
+        {
+            // head x(38-62) ; y(15-28)
+            return IsWithinRange(x, y, 38, 62, 15, 28);
+        }
+
+        private bool IsLeftHand(float x, float y)
+        {
+            // left hand x(60-70) ; y (45-60)
+            return IsWithinRange(x, y, 60, 70, 45, 60);
+        }
+
+        private bool IsRightHand(float x, float y)
+        {
+            // right hand x(30-40) ; y (45-60)
+            return IsWithinRange(x, y, 30, 40, 45, 60);
+        }
+
+        private bool IsBelly(float x, float y)
+        {
+            // belly x(40-60) ; y (45-55)
+            return IsWithinRange(x, y, 40, 60, 45, 55);
+        }
+
+        private bool IsFeet(float x, float y)
+        {
+            // feet x(35-65) ; y (80-92)
+            return IsWithinRange(x, y, 35, 65, 80, 92);
+        }
+
+        private bool IsWithinRange(float x, float y, int xFrom, int xTo, int yFrom, int yTo)
+        {
+            var metrics = Resources.DisplayMetrics;
+
+            var height = metrics.HeightPixels;
+            var width = metrics.WidthPixels;
+
+            var xPercents = (int)((x * 100) / width);
+            var yPercents = (int)((y * 100) / height);
+
+            return xPercents >= xFrom && xPercents <= xTo && yPercents >= yFrom && yPercents <= yTo;
+        }
+
         private void MoveAction(float x, float y)
         {
-            // x: 440 - 640
-            // y: 520 - 640 ; 120 / 8 = 15
-
-            //--------------
-            //-            -
-            //-  p1---p2   -
-            //-  p3---p4   -
-            //-            -
-            //-            -
-            //-            -
-            //-            -
-            //--------------
-
-            // 8 pictures by 15 px
-
-            // valid rect: p1(440, 520), p2(640, 520), p3(440, 640), p4(640, 640)
-
-
-            if (!_pullDownInProgress && (x >= 440 && x <= 640) && (y >= 520 && y <= 535))
+            // tits x(40-60) ; y(30-40)
+            // change picture every 2%
+            
+            if (!_pullDownInProgress && IsWithinRange(x, y, 40, 60, 30, 40))
             {
                 _statusTextView.Text += " - inside the starting range";
 
@@ -215,19 +268,20 @@ namespace App1
             else if (_pullDownInProgress)
             {
                 _statusTextView.Text += " - in progress...";
-                if ((y - _tempY) > 0)
+                var diff = Diff(y);
+                if (diff > 0)
                 {
                     //direction = Direction.Down;
                     _statusTextView.Text += " DOWN";
-
-                    ChangePicture(y, true);
+                    
+                    ChangePicture(diff);
                 }
-                else if ((y - _tempY) < 0)
+                else if (diff < 0)
                 {
                     //direction = Direction.Up;
                     _statusTextView.Text += " UP";
 
-                    ChangePicture(y, false);
+                    ChangePicture(diff);
                 }
 
                 // none
@@ -238,14 +292,25 @@ namespace App1
             }
         }
 
-        
-        private void ChangePicture(float y, bool down)
+        private int Diff(float y)
         {
-            // 520
-            int start = 520;
+            var metrics = Resources.DisplayMetrics;
 
-            int result = ((int)y - start);
-            int pullShirtDownPicture = (int)(Math.Floor((double)(result / 15)));
+            var height = metrics.HeightPixels;
+            
+            var yPercents = (int)((y * 100) / height);
+
+            var yTempPercents = (int)((_startY * 100) / height);
+
+            return yPercents - yTempPercents;
+        }
+        
+        private void ChangePicture(int diff)
+        {
+            _statusTextView.Text = diff.ToString();
+
+            //int pullShirtDownPicture = (int)(Math.Floor((double)(diff / 2)));
+            int pullShirtDownPicture = diff;
 
             if (pullShirtDownPicture == _pullShirtDownPicture || pullShirtDownPicture < 0 || pullShirtDownPicture > 7)
             {
@@ -255,7 +320,7 @@ namespace App1
             _pullShirtDownPicture = pullShirtDownPicture;
 
             string bitmapStringId = string.Format("pull_shirt_down_000{0}_min", pullShirtDownPicture);
-            int resID = this.Resources.GetIdentifier(bitmapStringId, "drawable", this.PackageName);
+            int resID = Resources.GetIdentifier(bitmapStringId, "drawable", PackageName);
 
             _mainImageView.SetImageResource(resID);
         }
@@ -306,6 +371,7 @@ namespace App1
                     options.InDither = true;
                     options.InSampleSize = 2;
                     options.InPurgeable = true;
+                    //options.InDensity = true;
 
                     using (Bitmap bitmap = BitmapFactory.DecodeResource(Resources, resID, options))
                     {

@@ -39,6 +39,19 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis />
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <Debugger>Xamarin</Debugger>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -120,6 +133,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\anim\" />
+    <Folder Include="Resources\layout-large\" />
+    <Folder Include="Resources\layout-normal\" />
+    <Folder Include="Resources\layout-small\" />
+    <Folder Include="Resources\layout-xlarge\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Kiss2.xml" />
