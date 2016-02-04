@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ClickArea1">Click area 1</string>
-  <string name="ClickArea2">Click area 2</string>
   <string name="ApplicationName">Angie</string>
 </resources>

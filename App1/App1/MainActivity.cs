@@ -17,7 +17,7 @@ namespace AppAngie
     /// Angie main activity class.
     /// </summary>
     /// <seealso cref="Android.App.Activity" />
-    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
+    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
     public class MainActivity : Activity
     {
         #region Fields
@@ -58,6 +58,9 @@ namespace AppAngie
         }
         #endregion
 
+        #region Methods
+        #region Private
+        #region Events
         #region MainImageView_Touch
         /// <summary>
         /// Handles the Touch event of the MainImageView control.
@@ -91,7 +94,7 @@ namespace AppAngie
                     #region Up
                     {
                         _statusTextView.Text = "Status: action up. x=" + e.Event.GetX() + " y=" + e.Event.GetY();
-                        
+
                         // if move event ends
                         if (_pullDownInProgress)
                         {
@@ -158,7 +161,8 @@ namespace AppAngie
                     #endregion
                     break;
             }
-        } 
+        }
+        #endregion 
         #endregion
 
         #region MoveAction
@@ -194,7 +198,7 @@ namespace AppAngie
             {
                 _statusTextView.Text += " - out side from the valid range";
             }
-        } 
+        }
         #endregion
 
         #region ChangePicturePullShirtDown
@@ -216,7 +220,7 @@ namespace AppAngie
 
             string bitmapString = string.Format("pull_shirt_down_000{0}_min", diff);
             ChangePicture(bitmapString);
-        } 
+        }
         #endregion
 
         #region ChangePicture
@@ -275,7 +279,7 @@ namespace AppAngie
                 animation.SetCallback(null);
                 animation = null;
             }
-        } 
+        }
         #endregion
 
         #region CacheImages
@@ -292,7 +296,7 @@ namespace AppAngie
                     {
                         continue;
                     }
-                    
+
                     var animationDrawable = new AnimationDrawable();
 
                     using (var stream = new StreamReader(Assets.Open(string.Format("{0}.xml", animation))))
@@ -322,7 +326,7 @@ namespace AppAngie
                                 animationDrawable.AddFrame(bitmapDrawable, int.Parse(duration));
                             }
                         }
-                        
+
                         // cache animation
                         _animationsDrawable.Add(animation.ToString(), animationDrawable);
                     }
@@ -332,7 +336,7 @@ namespace AppAngie
             {
                 _statusTextView.Text = ex.ToString();
             }
-        } 
+        }
         #endregion
 
         #region ReadAttribute
@@ -353,7 +357,9 @@ namespace AppAngie
             }
 
             return attribute.Value;
-        } 
+        }
+        #endregion  
+        #endregion
         #endregion
     }
     #region Comment
