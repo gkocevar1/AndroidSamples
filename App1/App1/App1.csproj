@@ -510,28 +510,28 @@
     <AndroidResource Include="Resources\drawable-nodpi\right_hand_poke_05_0019_min.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-ldpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-ldpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\angie.jpg" />
+    <AndroidResource Include="Resources\drawable\icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-nodpi\angie.jpg" />
+    <AndroidResource Include="Resources\drawable-nodpi\icon.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

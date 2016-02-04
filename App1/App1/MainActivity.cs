@@ -13,7 +13,11 @@ using Android.Widget;
 
 namespace AppAngie
 {
-    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/Angie", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
+    /// <summary>
+    /// Angie main activity class.
+    /// </summary>
+    /// <seealso cref="Android.App.Activity" />
+    [Activity(Label = "Angie", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
     public class MainActivity : Activity
     {
         #region Fields
@@ -44,19 +48,23 @@ namespace AppAngie
             _statusTextView.Text = "Status: init";
 
             _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
-            _mainImageView.Touch += _mainImageView_Touch;
+            _mainImageView.Touch += MainImageView_Touch;
 
             // cache all images
             CacheImages();
 
             // init touch calculator
             _tc = new TouchCalculator(Resources.DisplayMetrics);
-        } 
+        }
         #endregion
 
-        
-
-        private void _mainImageView_Touch(object sender, View.TouchEventArgs e)
+        #region MainImageView_Touch
+        /// <summary>
+        /// Handles the Touch event of the MainImageView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="View.TouchEventArgs"/> instance containing the event data.</param>
+        private void MainImageView_Touch(object sender, View.TouchEventArgs e)
         {
             switch (e.Event.Action)
             {
@@ -65,33 +73,32 @@ namespace AppAngie
                     {
                         _statusTextView.Text = "Status: action down.";
                         _startY = e.Event.GetY();
-                    } 
+                    }
                     #endregion
                     break;
 
                 case MotionEventActions.Move:
                     #region Move
                     {
-                        _statusTextView.Text = "Status: action move.";
-
-                        _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();
-
+                        _statusTextView.Text = "Status: action move. x = " + e.Event.GetX() + " y = " + e.Event.GetY();
+                        // mode is detected
                         MoveAction(e.Event.GetX(), e.Event.GetY());
-                    } 
+                    }
                     #endregion
                     break;
 
                 case MotionEventActions.Up:
                     #region Up
                     {
-                        _statusTextView.Text = "Status: action up.";
-                        _statusTextView.Text += " x=" + e.Event.GetX() + " y=" + e.Event.GetY();// + " xdp=" + ConvertPixelsToDp(e.Event.GetX()) + " ydp=" + ConvertPixelsToDp(e.Event.GetY());
-
+                        _statusTextView.Text = "Status: action up. x=" + e.Event.GetX() + " y=" + e.Event.GetY();
+                        
+                        // if move event ends
                         if (_pullDownInProgress)
                         {
-                            _pullDownInProgress = false;
+                            // reset start position of move
                             _startY = 0;
-                            _mainImageView.SetImageResource(Resource.Drawable.background);
+                            _pullDownInProgress = false;
+                            ChangePicture(Resource.Drawable.background);
                         }
                         else
                         {
@@ -99,16 +106,6 @@ namespace AppAngie
                             var animation = AnimationType.None;
                             float x = e.Event.GetX();
                             float y = e.Event.GetY();
-
-                            var metrics = Resources.DisplayMetrics;
-
-                            var height = metrics.HeightPixels;
-                            var width = metrics.WidthPixels;
-
-                            var xPercents = (int)((x * 100) / width);
-                            var yPercents = (int)((y * 100) / height);
-
-                            _statusTextView.Text += " x=" + xPercents + "% y=" + yPercents + "%";
 
                             if (_tc.IsHead(x, y))
                             {
@@ -146,6 +143,7 @@ namespace AppAngie
                                 {
                                     ClearAnimation();
 
+                                    // get animation drawable object from cache
                                     var animationDrawable = _animationsDrawable[animation.ToString()];
                                     _mainImageView.SetImageDrawable(animationDrawable);
                                     animationDrawable.Start();
@@ -156,13 +154,12 @@ namespace AppAngie
                                 _statusTextView.Text = ex.ToString();
                             }
                         }
-                    } 
+                    }
                     #endregion
                     break;
             }
-        }
-
-
+        } 
+        #endregion
 
         #region MoveAction
         /// <summary>
@@ -230,6 +227,15 @@ namespace AppAngie
         private void ChangePicture(string bitmapString)
         {
             var resourceId = Resources.GetIdentifier(bitmapString, "drawable", PackageName);
+            ChangePicture(resourceId);
+        }
+
+        /// <summary>
+        /// Changes the picture.
+        /// </summary>
+        /// <param name="resourceId">The resource identifier.</param>
+        private void ChangePicture(int resourceId)
+        {
             _mainImageView.SetImageResource(resourceId);
         }
         #endregion
@@ -324,7 +330,7 @@ namespace AppAngie
             }
             catch (Exception ex)
             {
-                // TODO: log this
+                _statusTextView.Text = ex.ToString();
             }
         } 
         #endregion
