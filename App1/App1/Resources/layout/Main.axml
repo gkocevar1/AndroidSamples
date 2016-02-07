@@ -20,4 +20,22 @@
         android:layout_height="wrap_content"
         android:id="@+id/statusTextView"
         android:layout_gravity="bottom" />
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recordStatusTextView"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp" />
+    <Button
+        android:text="Sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/soundButton" />
+    <Button
+        android:text="Video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/videoButton"
+        android:layout_gravity="right" />
 </FrameLayout>

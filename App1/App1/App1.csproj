@@ -64,6 +64,9 @@
   <ItemGroup>
     <Compile Include="AnimationDrawableCallback.cs" />
     <Compile Include="AnimationType.cs" />
+    <Compile Include="AudioRecorder.cs" />
+    <Compile Include="INotificationReceiver.cs" />
+    <Compile Include="NotificationManager.cs" />
     <Compile Include="SceneAnimation.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

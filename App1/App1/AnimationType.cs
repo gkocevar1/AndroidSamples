@@ -11,6 +11,11 @@ namespace AppAngie
         None,
 
         /// <summary>
+        /// The jump
+        /// </summary>
+        Jump,
+
+        /// <summary>
         /// The Kiss1
         /// </summary>
         Kiss1,
@@ -24,11 +29,11 @@ namespace AppAngie
         /// The kiss back
         /// </summary>
         KissBack,
-
+        
         /// <summary>
-        /// The jump
+        /// The poke under belly
         /// </summary>
-        Jump,
+        PokeUnderBelly,
 
         /// <summary>
         /// The left hand poke
@@ -41,8 +46,8 @@ namespace AppAngie
         RightHandPoke,
 
         /// <summary>
-        /// The poke under belly
+        /// The shirt pull down
         /// </summary>
-        PokeUnderBelly
+        ShirtPullDown,
     }
 }

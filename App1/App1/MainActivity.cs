@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Android.App;
 using Android.Content.PM;
@@ -10,6 +11,19 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+
+/*
+Audio:
+
+https://developer.xamarin.com/guides/android/application_fundamentals/working_with_audio/
+http://stackoverflow.com/questions/29534506/talking-app-like-talking-tom-audio-recording-didnt-work-on-all-devices
+http://stackoverflow.com/questions/8043387/android-audiorecord-supported-sampling-rates
+http://developer.android.com/training/managing-audio/audio-focus.html
+http://android-er.blogspot.si/2014/04/audiorecord-and-audiotrack-and-to.html   AudioRecord and AudioTrack, and to implement voice changer
+http://stackoverflow.com/questions/14181449/android-detect-sound-level
+http://stackoverflow.com/questions/16129480/how-to-test-sound-level-rms-algorithm
+
+*/
 
 namespace AppAngie
 {
@@ -23,14 +37,20 @@ namespace AppAngie
         #region Fields
         private ImageView _mainImageView;
         private TextView _statusTextView;
-        private int _headCounter = 0;
+        private TextView _recordStatusTextView;
+        private Button _soundButton;
+        private Button _videoButton;
+        
+        private AudioRecorder _audioRecord;
+        private TouchCalculator _touchCalculator;
+
         private int _pullShirtDownPicture = 0;
         private float _startY = 0;
         bool _pullDownInProgress = false;
-        private TouchCalculator _tc;
+        private bool _useNotifications = true;
 
         // cache animations
-        private JavaDictionary<string, AnimationDrawable> _animationsDrawable = new JavaDictionary<string, AnimationDrawable>(); 
+        private JavaDictionary<string, AnimationDrawable> _animationsDrawable = new JavaDictionary<string, AnimationDrawable>();
         #endregion
 
         #region OnCreate
@@ -43,19 +63,100 @@ namespace AppAngie
             base.OnCreate(bundle);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-            
-            _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
-            _statusTextView.Text = "Status: init";
-
-            _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
-            _mainImageView.Touch += MainImageView_Touch;
 
             // cache all images
             CacheImages();
 
+            _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
+            _mainImageView.Touch += MainImageView_Touch;
+
+            // helpers - temporary
+            // status text
+            _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
+            _statusTextView.Text = "Status: init";
+
+            // record button
+            _soundButton = FindViewById<Button>(Resource.Id.soundButton);
+            _soundButton.Click += async delegate
+            {
+                await StartOperationAsync(_audioRecord);
+            };
+            _videoButton = FindViewById<Button>(Resource.Id.soundButton);
+            //_videoButton.Click += async delegate
+            //{
+            //    await StartOperationAsync(_audioRecord);
+            //};
+
+            _recordStatusTextView = FindViewById<TextView>(Resource.Id.recordStatusTextView);
+
             // init touch calculator
-            _tc = new TouchCalculator(Resources.DisplayMetrics);
+            _touchCalculator = new TouchCalculator(Resources.DisplayMetrics);
+            // init audio recorder
+            _audioRecord = new AudioRecorder();
         }
+
+        private async Task StartOperationAsync(INotificationReceiver notificationReceiver)
+        {
+            //if (_useNotifications)
+            //{
+            //    bool haveFocus = nMan.RequestAudioResources(nRec);
+            //    if (haveFocus)
+            //    {
+            //        status.Text = "Granted";
+            //        await nRec.StartAsync();
+            //    }
+            //    else {
+            //        status.Text = "Denied";
+            //    }
+            //}
+            //else {
+            //    await nRec.StartAsync();
+            //}
+
+            await notificationReceiver.StartAsync();
+            //await CheckAplitude(notificationReceiver);
+
+            //notificationReceiver.GetAmplitude();
+        }
+
+        private async Task CheckAplitude(INotificationReceiver notificationReceiver)
+        {
+            await Task.Run(() =>
+            {
+                //var t = (double)0;
+                //var t2 = DateTime.Now;
+                while (true)
+                {
+                    //try
+                    //{
+                    //    if ((DateTime.Now - t2).TotalSeconds > 5)
+                    //    {
+                    //        t2 = DateTime.Now;
+                    //        t = (double)0;
+                    //    }
+
+                    //    var amplitude = notificationReceiver.GetAmplitude();
+                    //    if (amplitude > t)
+                    //    {
+                    //        t = amplitude;
+                    //        RunOnUiThread(() =>
+                    //        {
+                    //            _recordStatusTextView.Text = amplitude.ToString();
+                    //        });
+                    //    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //}
+
+                    Task.Delay(250);
+                }
+            });
+        }
+
+
+
         #endregion
 
         #region Methods
@@ -74,7 +175,6 @@ namespace AppAngie
                 case MotionEventActions.Down:
                     #region Down
                     {
-                        _statusTextView.Text = "Status: action down.";
                         _startY = e.Event.GetY();
                     }
                     #endregion
@@ -83,7 +183,6 @@ namespace AppAngie
                 case MotionEventActions.Move:
                     #region Move
                     {
-                        _statusTextView.Text = "Status: action move. x = " + e.Event.GetX() + " y = " + e.Event.GetY();
                         // mode is detected
                         MoveAction(e.Event.GetX(), e.Event.GetY());
                     }
@@ -93,8 +192,6 @@ namespace AppAngie
                 case MotionEventActions.Up:
                     #region Up
                     {
-                        _statusTextView.Text = "Status: action up. x=" + e.Event.GetX() + " y=" + e.Event.GetY();
-
                         // if move event ends
                         if (_pullDownInProgress)
                         {
@@ -106,51 +203,28 @@ namespace AppAngie
                         else
                         {
                             // touch only
-                            var animation = AnimationType.None;
                             float x = e.Event.GetX();
                             float y = e.Event.GetY();
+                            var animation = _touchCalculator.FindAnimation(x, y);
 
-                            if (_tc.IsHead(x, y))
-                            {
-                                animation = _headCounter % 2 == 0 ? AnimationType.Kiss1 : AnimationType.Kiss2;
-                                if (_headCounter++ == 3)
-                                {
-                                    animation = AnimationType.KissBack;
-                                }
-                            }
-                            else if (_tc.IsRightHand(x, y))
-                            {
-                                animation = AnimationType.RightHandPoke;
-                            }
-                            else if (_tc.IsLeftHand(x, y))
-                            {
-                                animation = AnimationType.LeftHandPoke;
-                            }
-                            else if (_tc.IsBelly(x, y))
-                            {
-                                animation = AnimationType.PokeUnderBelly;
-                            }
-                            else if (_tc.IsFeet(x, y))
-                            {
-                                animation = AnimationType.Jump;
-                            }
-
-                            if (animation != AnimationType.Kiss1 && animation != AnimationType.Kiss2)
-                            {
-                                _headCounter = 0;
-                            }
+                            _statusTextView.Text = string.Format("Status: UP ({0})", animation);
 
                             try
                             {
-                                if (animation != AnimationType.None)
+                                if (animation == AnimationType.None)
                                 {
-                                    ClearAnimation();
-
-                                    // get animation drawable object from cache
-                                    var animationDrawable = _animationsDrawable[animation.ToString()];
-                                    _mainImageView.SetImageDrawable(animationDrawable);
-                                    animationDrawable.Start();
+                                    break;
                                 }
+
+                                ClearAnimation();
+
+                                //runable
+                                //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
+                                
+                                // get animation drawable object from cache
+                                var animationDrawable = _animationsDrawable[animation.ToString()];
+                                _mainImageView.SetImageDrawable(animationDrawable);
+                                animationDrawable.Start();
                             }
                             catch (Exception ex)
                             {
@@ -173,31 +247,33 @@ namespace AppAngie
         /// <param name="y">The y.</param>
         private void MoveAction(float x, float y)
         {
-            if (!_pullDownInProgress && _tc.IsTits(x, y))
+            var animation = _touchCalculator.FindAnimation(x, y);
+            _statusTextView.Text = "Status: MOVE - ";            
+
+            if (!_pullDownInProgress && animation == AnimationType.ShirtPullDown)
             {
-                _statusTextView.Text += " - inside the starting range";
                 _pullDownInProgress = true;
             }
             else if (_pullDownInProgress)
             {
-                _statusTextView.Text += " - in progress...";
                 // calculate distance in percents between y start postion and current y position (user move)
-                var diff = _tc.CalculateDistanceInPercents(_startY, y);
+                var diff = _touchCalculator.CalculateDistanceInPercents(_startY, y);
                 if (diff > 0)
                 {
-                    _statusTextView.Text += " DOWN";
+                    // down
                     ChangePicturePullShirtDown(diff);
+                    _statusTextView.Text += "DOWN";
                 }
                 else if (diff < 0)
                 {
-                    _statusTextView.Text += " UP";
+                    // up
                     ChangePicturePullShirtDown(diff);
+                    _statusTextView.Text += "UP";
                 }
             }
-            else
-            {
-                _statusTextView.Text += " - out side from the valid range";
-            }
+
+            _statusTextView.Text = "Status: MOVE - nothing";
+            //out side from the valid range
         }
         #endregion
 
@@ -292,7 +368,7 @@ namespace AppAngie
             {
                 foreach (AnimationType animation in Enum.GetValues(typeof(AnimationType)))
                 {
-                    if (animation == AnimationType.None)
+                    if (animation == AnimationType.None || animation == AnimationType.ShirtPullDown)
                     {
                         continue;
                     }
