@@ -34,25 +34,6 @@ namespace AppAngie
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
     public class MainActivity : Activity
     {
-        #region Fields
-        private ImageView _mainImageView;
-        private TextView _statusTextView;
-        private TextView _recordStatusTextView;
-        private Button _soundButton;
-        private Button _videoButton;
-        
-        private AudioRecorder _audioRecord;
-        private TouchCalculator _touchCalculator;
-
-        private int _pullShirtDownPicture = 0;
-        private float _startY = 0;
-        bool _pullDownInProgress = false;
-        private bool _useNotifications = true;
-
-        // cache animations
-        private JavaDictionary<string, AnimationDrawable> _animationsDrawable = new JavaDictionary<string, AnimationDrawable>();
-        #endregion
-
         #region OnCreate
         /// <summary>
         /// Called when [create].
@@ -64,30 +45,10 @@ namespace AppAngie
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // cache all images
-            CacheImages();
-
-            _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
-            _mainImageView.Touch += MainImageView_Touch;
-
-            // helpers - temporary
-            // status text
-            _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
-            _statusTextView.Text = "Status: init";
-
-            // record button
-            _soundButton = FindViewById<Button>(Resource.Id.soundButton);
-            _soundButton.Click += async delegate
-            {
-                await StartOperationAsync(_audioRecord);
-            };
-            _videoButton = FindViewById<Button>(Resource.Id.soundButton);
-            //_videoButton.Click += async delegate
-            //{
-            //    await StartOperationAsync(_audioRecord);
-            //};
-
-            _recordStatusTextView = FindViewById<TextView>(Resource.Id.recordStatusTextView);
+            // cache animations
+            CacheAnimations();
+            // init controls
+            InitControls();
 
             // init touch calculator
             _touchCalculator = new TouchCalculator(Resources.DisplayMetrics);
@@ -170,12 +131,16 @@ namespace AppAngie
         /// <param name="e">The <see cref="View.TouchEventArgs"/> instance containing the event data.</param>
         private void MainImageView_Touch(object sender, View.TouchEventArgs e)
         {
+            float x = e.Event.GetX();
+            float y = e.Event.GetY();
+
             switch (e.Event.Action)
             {
                 case MotionEventActions.Down:
                     #region Down
                     {
-                        _startY = e.Event.GetY();
+                        // handle down action
+                        DownAction(x, y);
                     }
                     #endregion
                     break;
@@ -183,8 +148,8 @@ namespace AppAngie
                 case MotionEventActions.Move:
                     #region Move
                     {
-                        // mode is detected
-                        MoveAction(e.Event.GetX(), e.Event.GetY());
+                        // handle move action
+                        MoveAction(x, y);
                     }
                     #endregion
                     break;
@@ -192,56 +157,71 @@ namespace AppAngie
                 case MotionEventActions.Up:
                     #region Up
                     {
-                        // if move event ends
-                        if (_pullDownInProgress)
-                        {
-                            // reset start position of move
-                            _startY = 0;
-                            _pullDownInProgress = false;
-                            ChangePicture(Resource.Drawable.background);
-                        }
-                        else
-                        {
-                            // touch only
-                            float x = e.Event.GetX();
-                            float y = e.Event.GetY();
-                            var animation = _touchCalculator.FindAnimation(x, y);
-
-                            _statusTextView.Text = string.Format("Status: UP ({0})", animation);
-
-                            try
-                            {
-                                if (animation == AnimationType.None)
-                                {
-                                    break;
-                                }
-
-                                ClearAnimation();
-
-                                //runable
-                                //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
-                                
-                                // get animation drawable object from cache
-                                var animationDrawable = _animationsDrawable[animation.ToString()];
-                                _mainImageView.SetImageDrawable(animationDrawable);
-                                animationDrawable.Start();
-                            }
-                            catch (Exception ex)
-                            {
-                                _statusTextView.Text = ex.ToString();
-                            }
-                        }
+                        // handle up action
+                        UpAction(x, y);
                     }
                     #endregion
                     break;
             }
         }
-        #endregion 
+        #endregion
+        #endregion
+
+        #region InitControls
+        /// <summary>
+        /// Initializes the controls.
+        /// </summary>
+        private void InitControls()
+        {
+            // init mage view
+            _mainImageView = FindViewById<ImageView>(Resource.Id.animated_android);
+            // attach touch event
+            _mainImageView.Touch += MainImageView_Touch;
+
+            #region Helper - only in debug mode
+            // init status text view
+            _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
+            _statusTextView.Text = "Status: init";
+
+            // init record button
+            _soundButton = FindViewById<Button>(Resource.Id.soundButton);
+            _soundButton.Click += async delegate
+            {
+                await StartOperationAsync(_audioRecord);
+            };
+
+            _recordStatusTextView = FindViewById<TextView>(Resource.Id.recordStatusTextView);
+            #endregion
+
+            // init video button
+            _videoButton = FindViewById<Button>(Resource.Id.soundButton);
+            // attach click event
+            //_videoButton.Click += async delegate
+            //{
+            //    await StartOperationAsync(_audioRecord);
+            //};
+        } 
+        #endregion
+
+        #region DownAction
+        /// <summary>
+        /// Handle down action.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        private void DownAction(float x, float y)
+        {
+            // set start y position
+            // field is used for move actions
+            _startY = y;
+
+            // x parameter is currently not in use
+        } 
         #endregion
 
         #region MoveAction
         /// <summary>
-        /// Moves the action.
+        /// Handle move action.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
@@ -261,13 +241,13 @@ namespace AppAngie
                 if (diff > 0)
                 {
                     // down
-                    ChangePicturePullShirtDown(diff);
+                    PullShirtAction(diff);
                     _statusTextView.Text += "DOWN";
                 }
                 else if (diff < 0)
                 {
                     // up
-                    ChangePicturePullShirtDown(diff);
+                    PullShirtAction(diff);
                     _statusTextView.Text += "UP";
                 }
             }
@@ -277,22 +257,72 @@ namespace AppAngie
         }
         #endregion
 
-        #region ChangePicturePullShirtDown
+        #region UpAction
         /// <summary>
-        /// Changes the picture pull shirt down.
+        /// Handle up action.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        private void UpAction(float x, float y)
+        {
+            // if move event ends
+            if (_pullDownInProgress)
+            {
+                // reset start position of move
+                _startY = 0;
+                _pullDownInProgress = false;
+
+                // set background
+                ChangePicture(Resource.Drawable.background);
+            }
+            else
+            {
+                // touch only
+                var animation = _touchCalculator.FindAnimation(x, y);
+
+                _statusTextView.Text = string.Format("Status: UP ({0})", animation);
+
+                try
+                {
+                    if (animation == AnimationType.None)
+                    {
+                        return;
+                    }
+
+                    ClearAnimation();
+
+                    //runable
+                    //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
+
+                    // get animation drawable object from cache
+                    var animationDrawable = _animationsDrawable[animation.ToString()];
+                    _mainImageView.SetImageDrawable(animationDrawable);
+                    animationDrawable.Start();
+                }
+                catch (Exception ex)
+                {
+                    _statusTextView.Text = ex.ToString();
+                }
+            }
+        }
+        #endregion
+
+        #region PullShirtAction
+        /// <summary>
+        /// Handles pull shirt action
         /// </summary>
         /// <param name="diff">The difference in percent between y start position and current y position.</param>
-        private void ChangePicturePullShirtDown(int diff)
+        private void PullShirtAction(int diff)
         {
             _statusTextView.Text = diff.ToString();
 
             // 8 pictures for pull down
-            if (diff == _pullShirtDownPicture || diff < 0 || diff > 7)
+            if (diff == _pullShirtDownPictureId || diff < 0 || diff > 7)
             {
                 return;
             }
 
-            _pullShirtDownPicture = diff;
+            _pullShirtDownPictureId = diff;
 
             string bitmapString = string.Format("pull_shirt_down_000{0}_min", diff);
             ChangePicture(bitmapString);
@@ -358,11 +388,11 @@ namespace AppAngie
         }
         #endregion
 
-        #region CacheImages
+        #region CacheAnimations
         /// <summary>
-        /// Caches the images.
+        /// Caches all animations.
         /// </summary>
-        private void CacheImages()
+        private void CacheAnimations()
         {
             try
             {
@@ -434,8 +464,27 @@ namespace AppAngie
 
             return attribute.Value;
         }
-        #endregion  
         #endregion
+        #endregion
+        #endregion
+
+        #region Fields
+        private ImageView _mainImageView;
+        private TextView _statusTextView;
+        private TextView _recordStatusTextView;
+        private Button _soundButton;
+        private Button _videoButton;
+
+        private AudioRecorder _audioRecord;
+        private TouchCalculator _touchCalculator;
+
+        private int _pullShirtDownPictureId = 0;
+        private float _startY = 0;
+        bool _pullDownInProgress = false;
+        private bool _useNotifications = true;
+
+        // cache animations
+        private JavaDictionary<string, AnimationDrawable> _animationsDrawable = new JavaDictionary<string, AnimationDrawable>();
         #endregion
     }
     #region Comment
