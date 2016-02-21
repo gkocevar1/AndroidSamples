@@ -26,14 +26,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/recordStatusTextView"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="30dp" />
     <Button
         android:text="Sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/soundButton" />
-    <Button
-        android:text="Video"
+    <ImageButton
+        android:src="@drawable/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/videoButton"

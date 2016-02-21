@@ -11,8 +11,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Media;
+using Android.Content;
+using System.Threading;
 
 /*
+
 Audio:
 
 https://developer.xamarin.com/guides/android/application_fundamentals/working_with_audio/
@@ -23,6 +27,18 @@ http://android-er.blogspot.si/2014/04/audiorecord-and-audiotrack-and-to.html   A
 http://stackoverflow.com/questions/14181449/android-detect-sound-level
 http://stackoverflow.com/questions/16129480/how-to-test-sound-level-rms-algorithm
 
+Find out when animation ends
+
+
+Jakost zvoka med govorom - s tem bo povezana animacija
+
+Limit sound to 45 seconds per listening
+Limit video to 60 seconds per recording
+
+Banner for commercials
+
+Play video
+Share video telephone default
 */
 
 namespace AppAngie
@@ -32,7 +48,7 @@ namespace AppAngie
     /// </summary>
     /// <seealso cref="Android.App.Activity" />
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@android:style/Theme.NoTitleBar")]
-    public class MainActivity : Activity
+    public class MainActivity : Activity, IProcessListener
     {
         #region OnCreate
         /// <summary>
@@ -45,76 +61,108 @@ namespace AppAngie
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            DateTime start = DateTime.Now;
             // cache animations
             CacheAnimations();
+            DateTime end = DateTime.Now;
+
             // init controls
             InitControls();
+            _statusTextView.Text = "Status: Init - Animation cache time (in ms): " + (end - start).TotalMilliseconds;
+
+            NotificationManager.AudioManager = (AudioManager)GetSystemService(Context.AudioService);
+            NotificationManager.MainActivity = this;
 
             // init touch calculator
             _touchCalculator = new TouchCalculator(Resources.DisplayMetrics);
             // init audio recorder
-            _audioRecord = new AudioRecorder();
+            _audioRecord = new AudioRecorder(this);
+            // init notification manager
+            _notificationManager = new NotificationManager();
         }
 
         private async Task StartOperationAsync(INotificationReceiver notificationReceiver)
         {
-            //if (_useNotifications)
-            //{
-            //    bool haveFocus = nMan.RequestAudioResources(nRec);
-            //    if (haveFocus)
-            //    {
-            //        status.Text = "Granted";
-            //        await nRec.StartAsync();
-            //    }
-            //    else {
-            //        status.Text = "Denied";
-            //    }
-            //}
-            //else {
-            //    await nRec.StartAsync();
-            //}
-
-            await notificationReceiver.StartAsync();
-            //await CheckAplitude(notificationReceiver);
-
-            //notificationReceiver.GetAmplitude();
+            bool haveFocus = _notificationManager.RequestAudioResources(notificationReceiver);
+            if (haveFocus)
+            {
+                //status.Text = "Granted";
+                await notificationReceiver.StartAsync();
+            }
+            else {
+                //status.Text = "Denied";
+            }
         }
 
-        private async Task CheckAplitude(INotificationReceiver notificationReceiver)
+        //private async Task CheckAplitude()
+        //{
+        //    await Task.Run(async () =>
+        //    {
+        //        while (true)
+        //        {
+        //            try
+        //            {
+        //                var amplitude = _audioRecord.GetAmplitude;
+        //                {
+        //                    RunOnUiThread(() =>
+        //                    {
+        //                        _recordStatusTextView.Text = amplitude.ToString();
+        //                    });
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                RunOnUiThread(() =>
+        //                {
+        //                    _recordStatusTextView.Text = ex.ToString();
+        //                });
+        //            }
+
+        //            await Task.Delay(250);
+        //        }
+        //    });
+        //}
+
+
+
+        // 
+        //
+        // SOUND SOUND SOUND
+        //
+        //
+
+        private bool _isRecordingVoice = false;
+        private void SoundButton_Click(object sender, EventArgs e)
         {
-            await Task.Run(() =>
+            if (!_isRecordingVoice)
             {
-                //var t = (double)0;
-                //var t2 = DateTime.Now;
-                while (true)
-                {
-                    //try
-                    //{
-                    //    if ((DateTime.Now - t2).TotalSeconds > 5)
-                    //    {
-                    //        t2 = DateTime.Now;
-                    //        t = (double)0;
-                    //    }
+                // start
+                _isRecordingVoice = true;
+                var thread = new Thread(async () => await _audioRecord.StartAsync());
+                thread.Start();
+                //await _audioRecord.StartAsync(); // start in new thread ???
+            }
+            else
+            {
+                // stop 
+                _isRecordingVoice = false;
+                _audioRecord.Stop();
+            }
+        }
 
-                    //    var amplitude = notificationReceiver.GetAmplitude();
-                    //    if (amplitude > t)
-                    //    {
-                    //        t = amplitude;
-                    //        RunOnUiThread(() =>
-                    //        {
-                    //            _recordStatusTextView.Text = amplitude.ToString();
-                    //        });
-                    //    }
-                    //}
-                    //catch (Exception ex)
-                    //{
-
-                    //}
-
-                    Task.Delay(250);
-                }
+        public void ProcessContent(string content)
+        {
+            RunOnUiThread(() =>
+            {
+                _recordStatusTextView.Text = content;
             });
         }
+
+        //
+        //
+        //
+
+
 
 
 
@@ -178,17 +226,23 @@ namespace AppAngie
             // attach touch event
             _mainImageView.Touch += MainImageView_Touch;
 
-            #region Helper - only in debug mode
+            #region Helpers
             // init status text view
             _statusTextView = FindViewById<TextView>(Resource.Id.statusTextView);
-            _statusTextView.Text = "Status: init";
 
             // init record button
             _soundButton = FindViewById<Button>(Resource.Id.soundButton);
-            _soundButton.Click += async delegate
-            {
-                await StartOperationAsync(_audioRecord);
-            };
+            _soundButton.Click += SoundButton_Click;
+            //_soundButton.Click += delegate
+            //{
+            //    var tasks = new List<Task>();
+            //    //tasks.Add(Task.Run(async () => { await CheckAplitude(); }));
+            //    //tasks.Add(Task.Run(async () => { await StartOperationAsync(_audioRecord); }));
+            //    tasks.Add(Task.Run(() => { CheckAplitude(); }));
+            //    tasks.Add(Task.Run(() => { StartOperationAsync(_audioRecord); }));
+
+            //    Task.WaitAll(tasks.ToArray());
+            //};
 
             _recordStatusTextView = FindViewById<TextView>(Resource.Id.recordStatusTextView);
             #endregion
@@ -200,7 +254,7 @@ namespace AppAngie
             //{
             //    await StartOperationAsync(_audioRecord);
             //};
-        } 
+        }
         #endregion
 
         #region DownAction
@@ -241,18 +295,17 @@ namespace AppAngie
                 if (diff > 0)
                 {
                     // down
-                    PullShirtAction(diff);
                     _statusTextView.Text += "DOWN";
+                    PullShirtAction(diff);
                 }
                 else if (diff < 0)
                 {
                     // up
-                    PullShirtAction(diff);
                     _statusTextView.Text += "UP";
+                    PullShirtAction(diff);
                 }
             }
 
-            _statusTextView.Text = "Status: MOVE - nothing";
             //out side from the valid range
         }
         #endregion
@@ -284,7 +337,7 @@ namespace AppAngie
 
                 try
                 {
-                    if (animation == AnimationType.None)
+                    if (!_animationsDrawable.ContainsKey(animation.ToString()))
                     {
                         return;
                     }
@@ -314,7 +367,7 @@ namespace AppAngie
         /// <param name="diff">The difference in percent between y start position and current y position.</param>
         private void PullShirtAction(int diff)
         {
-            _statusTextView.Text = diff.ToString();
+            _statusTextView.Text += " " + diff;
 
             // 8 pictures for pull down
             if (diff == _pullShirtDownPictureId || diff < 0 || diff > 7)
@@ -477,6 +530,7 @@ namespace AppAngie
 
         private AudioRecorder _audioRecord;
         private TouchCalculator _touchCalculator;
+        private NotificationManager _notificationManager;
 
         private int _pullShirtDownPictureId = 0;
         private float _startY = 0;

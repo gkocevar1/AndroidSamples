@@ -64,8 +64,11 @@
   <ItemGroup>
     <Compile Include="AnimationDrawableCallback.cs" />
     <Compile Include="AnimationType.cs" />
+    <Compile Include="AudioPlayer.cs" />
     <Compile Include="AudioRecorder.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="INotificationReceiver.cs" />
+    <Compile Include="IProcessListener.cs" />
     <Compile Include="NotificationManager.cs" />
     <Compile Include="SceneAnimation.cs" />
     <Compile Include="MainActivity.cs" />
@@ -535,6 +538,30 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\camera.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
