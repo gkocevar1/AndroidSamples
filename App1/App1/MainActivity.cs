@@ -150,18 +150,38 @@ namespace AppAngie
             }
         }
 
-        public void ProcessContent(string content)
+        bool _isRunning = false;
+        public void ProcessContent(string content, bool r)
         {
             RunOnUiThread(() =>
             {
                 _recordStatusTextView.Text = content;
+                if (r && !_isRunning)
+                {
+                    _isRunning = true;
+
+                    ClearAnimation();
+
+                    //runable
+                    //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
+
+                    // get animation drawable object from cache
+                    var animationDrawable = _animationsDrawable[AnimationType.KissBack.ToString()];
+                    _mainImageView.SetImageDrawable(animationDrawable);
+                    animationDrawable.Start();
+                }
             });
         }
 
         //
         //
         //
-
+        private void PlaySoundButton_Click(object sender, EventArgs e)
+        {
+            var ap = new AudioPlayer();
+            var thread = new Thread(async () => await ap.StartAsync());
+            thread.Start();
+        }
 
 
 
@@ -233,6 +253,8 @@ namespace AppAngie
             // init record button
             _soundButton = FindViewById<Button>(Resource.Id.soundButton);
             _soundButton.Click += SoundButton_Click;
+            _playSoundButton = FindViewById<Button>(Resource.Id.playSoundButton);
+            _playSoundButton.Click += PlaySoundButton_Click;
             //_soundButton.Click += delegate
             //{
             //    var tasks = new List<Task>();
@@ -255,6 +277,8 @@ namespace AppAngie
             //    await StartOperationAsync(_audioRecord);
             //};
         }
+
+        
         #endregion
 
         #region DownAction
@@ -527,6 +551,7 @@ namespace AppAngie
         private TextView _recordStatusTextView;
         private Button _soundButton;
         private Button _videoButton;
+        private Button _playSoundButton;
 
         private AudioRecorder _audioRecord;
         private TouchCalculator _touchCalculator;

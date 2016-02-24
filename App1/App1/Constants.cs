@@ -8,6 +8,6 @@ namespace AppAngie
         /// <summary>
         /// The sample rate
         /// </summary>
-        public const int SampleRate = 44100;
+        public const int SampleRate = 11025;
     }
 }

@@ -1,14 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Android.Media;
 
 namespace AppAngie
 {
@@ -17,15 +10,56 @@ namespace AppAngie
     /// </summary>
     public class AudioPlayer : INotificationReceiver
     {
+        static string filePath = "/storage/sdcard0/test.mp4";
+        byte[] buffer = null;
+        AudioTrack audioTrack = null;
 
-        public Task StartAsync()
+        public async Task PlaybackAsync()
         {
-            throw new NotImplementedException();
+            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            BinaryReader binaryReader = new BinaryReader(fileStream);
+            long totalBytes = new System.IO.FileInfo(filePath).Length;
+            buffer = binaryReader.ReadBytes((Int32)totalBytes);
+            fileStream.Close();
+            fileStream.Dispose();
+            binaryReader.Close();
+            await PlayAudioTrackAsync();
+        }
+
+        protected async Task PlayAudioTrackAsync()
+        {
+            audioTrack = new AudioTrack(
+                // Stream type
+                Android.Media.Stream.Music,
+                // Frequency
+                11025,
+                // Mono or stereo
+                ChannelOut.Mono,
+                // Audio encoding
+                Android.Media.Encoding.Pcm16bit,
+                // Length of the audio clip.
+                buffer.Length,
+                // Mode. Stream or static.
+                AudioTrackMode.Stream);
+
+            audioTrack.Play();
+
+            await audioTrack.WriteAsync(buffer, 0, buffer.Length);
+        }
+
+        public async Task StartAsync()
+        {
+            await PlaybackAsync();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            if (audioTrack != null)
+            {
+                audioTrack.Stop();
+                audioTrack.Release();
+                audioTrack = null;
+            }
         }
     }
 }

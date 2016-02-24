@@ -495,6 +495,9 @@ namespace AppAngie
 			// aapt resource value: 0x7f050000
 			public const int animated_android = 2131034112;
 			
+			// aapt resource value: 0x7f050005
+			public const int playSoundButton = 2131034117;
+			
 			// aapt resource value: 0x7f050002
 			public const int recordStatusTextView = 2131034114;
 			
