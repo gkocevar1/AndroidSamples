@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Android.Media;
+using Android.Util;
 
 namespace AppAngie
 {
@@ -10,56 +11,98 @@ namespace AppAngie
     /// </summary>
     public class AudioPlayer : INotificationReceiver
     {
-        static string filePath = "/storage/sdcard0/test.mp4";
-        byte[] buffer = null;
-        AudioTrack audioTrack = null;
-
-        public async Task PlaybackAsync()
+        #region Methods
+        #region Public
+        #region StartAsync
+        /// <summary>
+        /// Starts playing audio.
+        /// </summary>
+        /// <returns></returns>
+        public async Task StartAsync()
         {
-            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            BinaryReader binaryReader = new BinaryReader(fileStream);
-            long totalBytes = new System.IO.FileInfo(filePath).Length;
-            buffer = binaryReader.ReadBytes((Int32)totalBytes);
-            fileStream.Close();
-            fileStream.Dispose();
-            binaryReader.Close();
-            await PlayAudioTrackAsync();
+            await PlaybackAsync();
         }
+        #endregion
 
-        protected async Task PlayAudioTrackAsync()
+        #region Stop
+        /// <summary>
+        /// Stops playing the audio.
+        /// </summary>
+        public void Stop()
         {
-            audioTrack = new AudioTrack(
+            if (_audioTrack != null)
+            {
+                _audioTrack.Stop();
+                _audioTrack.Release();
+                _audioTrack = null;
+            }
+        }  
+        #endregion
+        #endregion
+
+        #region Private
+        #region PlaybackAsync
+        /// <summary>
+        /// Playbacks the asynchronous.
+        /// </summary>
+        /// <returns></returns>
+        private async Task PlaybackAsync()
+        {
+            try
+            {
+                using (var fileStream = new FileStream(_filePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (var binaryReader = new BinaryReader(fileStream))
+                    {
+                        var totalBytes = new FileInfo(_filePath).Length;
+                        var buffer = binaryReader.ReadBytes((Int32)totalBytes);
+
+                        binaryReader.Close();
+                        await PlayAudioTrackAsync(buffer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Verbose(TAG, "Error playing audio", ex);
+            }
+        }
+        #endregion
+        #region PlayAudioTrackAsync
+        /// <summary>
+        /// Plays the audio track asynchronous.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <returns></returns>
+        private async Task PlayAudioTrackAsync(byte[] buffer)
+        {
+            _audioTrack = new AudioTrack(
                 // Stream type
                 Android.Media.Stream.Music,
                 // Frequency
-                11025,
+                Constants.SampleRate,
                 // Mono or stereo
                 ChannelOut.Mono,
                 // Audio encoding
-                Android.Media.Encoding.Pcm16bit,
+                Encoding.Pcm16bit,
                 // Length of the audio clip.
                 buffer.Length,
                 // Mode. Stream or static.
                 AudioTrackMode.Stream);
 
-            audioTrack.Play();
+            _audioTrack.Play();
 
-            await audioTrack.WriteAsync(buffer, 0, buffer.Length);
+            await _audioTrack.WriteAsync(buffer, 0, buffer.Length);
         }
+        #endregion
+        #endregion
+        #endregion
 
-        public async Task StartAsync()
-        {
-            await PlaybackAsync();
-        }
-
-        public void Stop()
-        {
-            if (audioTrack != null)
-            {
-                audioTrack.Stop();
-                audioTrack.Release();
-                audioTrack = null;
-            }
-        }
+        #region Fields
+        private static string _filePath = "/data/data/App.Angie/files/audio.mp4";
+        //private static string _filePath = "/storage/sdcard0/test.mp4";
+        private AudioTrack _audioTrack = null;
+        private const string TAG = "AudioPlayer";
+        #endregion
     }
 }

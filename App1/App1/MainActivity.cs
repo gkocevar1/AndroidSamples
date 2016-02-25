@@ -14,6 +14,7 @@ using Android.Widget;
 using Android.Media;
 using Android.Content;
 using System.Threading;
+using Android.Util;
 
 /*
 
@@ -140,7 +141,6 @@ namespace AppAngie
                 _isRecordingVoice = true;
                 var thread = new Thread(async () => await _audioRecord.StartAsync());
                 thread.Start();
-                //await _audioRecord.StartAsync(); // start in new thread ???
             }
             else
             {
@@ -151,24 +151,16 @@ namespace AppAngie
         }
 
         bool _isRunning = false;
-        public void ProcessContent(string content, bool r)
+        public void ProcessContent(string content, AnimationType animationType)
         {
             RunOnUiThread(() =>
             {
                 _recordStatusTextView.Text = content;
-                if (r && !_isRunning)
+                if (animationType != AnimationType.None && !_isRunning)
                 {
                     _isRunning = true;
 
-                    ClearAnimation();
-
-                    //runable
-                    //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
-
-                    // get animation drawable object from cache
-                    var animationDrawable = _animationsDrawable[AnimationType.KissBack.ToString()];
-                    _mainImageView.SetImageDrawable(animationDrawable);
-                    animationDrawable.Start();
+                    PlayAnimation(animationType);
                 }
             });
         }
@@ -356,40 +348,52 @@ namespace AppAngie
             {
                 // touch only
                 var animation = _touchCalculator.FindAnimation(x, y);
+                
+                PlayAnimation(animation);
+            }
+        }
+        #endregion
 
-                _statusTextView.Text = string.Format("Status: UP ({0})", animation);
+        #region PlayAnimation
+        /// <summary>
+        /// Plays the animation.
+        /// </summary>
+        /// <param name="animationType">Type of the animation.</param>
+        private void PlayAnimation(AnimationType animationType)
+        {
+            try
+            {
+                _statusTextView.Text = string.Format("Status: UP ({0})", animationType);
 
-                try
+                if (!_animationsDrawable.ContainsKey(animationType.ToString()))
                 {
-                    if (!_animationsDrawable.ContainsKey(animation.ToString()))
-                    {
-                        return;
-                    }
-
-                    ClearAnimation();
-
-                    //runable
-                    //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
-
-                    // get animation drawable object from cache
-                    var animationDrawable = _animationsDrawable[animation.ToString()];
-                    _mainImageView.SetImageDrawable(animationDrawable);
-                    animationDrawable.Start();
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    _statusTextView.Text = ex.ToString();
-                }
+
+                ClearAnimation();
+
+                //runable
+                //https://forums.xamarin.com/discussion/14652/how-to-convert-javas-runnable-in-c
+
+                // get animation drawable object from cache
+                var animationDrawable = _animationsDrawable[animationType.ToString()];
+                _mainImageView.SetImageDrawable(animationDrawable);
+                animationDrawable.Start();
+            }
+            catch (Exception ex)
+            {
+                _statusTextView.Text = ex.ToString();
+                Log.Verbose(TAG, "Error playing animation", ex);
             }
         }
         #endregion
 
         #region PullShirtAction
-        /// <summary>
-        /// Handles pull shirt action
-        /// </summary>
-        /// <param name="diff">The difference in percent between y start position and current y position.</param>
-        private void PullShirtAction(int diff)
+/// <summary>
+/// Handles pull shirt action
+/// </summary>
+/// <param name="diff">The difference in percent between y start position and current y position.</param>
+private void PullShirtAction(int diff)
         {
             _statusTextView.Text += " " + diff;
 
@@ -564,6 +568,7 @@ namespace AppAngie
 
         // cache animations
         private JavaDictionary<string, AnimationDrawable> _animationsDrawable = new JavaDictionary<string, AnimationDrawable>();
+        private const string TAG = "MainActivity";
         #endregion
     }
     #region Comment

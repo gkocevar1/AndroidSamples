@@ -9,5 +9,10 @@ namespace AppAngie
         /// The sample rate
         /// </summary>
         public const int SampleRate = 11025;
+
+        /// <summary>
+        /// Record audio when sound pressure is more than 45 dB
+        /// </summary>
+        public const int RecordAudioAtSoundPressure = 45;
     }
 }

@@ -5,13 +5,12 @@ using Java.Lang;
 using System.IO;
 using Android.Util;
 using Java.Text;
-using System.Linq;
 using Java.Nio;
 
 namespace AppAngie
 {
     /// <summary>
-    /// 
+    /// Different sampling details (see revision 16)
     /// </summary>
     public class AudioRecorder : INotificationReceiver
     {
@@ -48,8 +47,9 @@ namespace AppAngie
         public void Stop()
         {
             _isRecording = false;
+            
             // Give it time to drop out.
-            Thread.Sleep(250); 
+            Thread.Sleep(50); 
         }
         #endregion
         #endregion
@@ -64,9 +64,6 @@ namespace AppAngie
         {
             try
             {
-                //_endRecording = false;
-                //_isRecording = true;
-
                 //RaiseRecordingStateChangedEvent();
 
                 // Buffer for 20 milliseconds of data, e.g. 160 samples at 8kHz.
@@ -103,36 +100,21 @@ namespace AppAngie
 
                 while (_isRecording)
                 {
-                    //var numSamples = audioRecord.Read(buffer20ms, 0, buffer20ms.Length);
-                    //_totalNumberOfSamples += numSamples;
-
-                    // TODO: what if I will use bufferSize field (convert to short)
-
-
-                    //var samplesNumber = await audioRecord.ReadAsync(buffer20ms, 0, buffer20ms.Length);
-                    // or
                     var samplesNumber = await audioRecord.ReadAsync(audioBuffer, 0, audioBuffer.Length);
-
-
-                    //var pressure = ProcessAudio(audioBuffer.Select(x => (short)x).ToArray());
-
+                    
                     var buffer20ms2 = new short[audioBuffer.Length / 2];
-                    ByteBuffer.Wrap(audioBuffer).Order(ByteOrder.LittleEndian).AsShortBuffer().Get(buffer20ms2);
+                    
 
                     var pressure = ProcessAudio(buffer20ms2);
-                    if (pressure > 40 || _isRecording2)
+                    if (pressure > Constants.RecordAudioAtSoundPressure || _isRecording2)
                     {
                         // start recording
-                        
                         if (!_isRecording2)
                         {
                             _fs = new FileStream(_filePath, FileMode.Create, FileAccess.ReadWrite);
                             _isRecording2 = true;
                         }
-
-
-                        //byte[] bytes2 = new byte[buffer20ms.Length * 2];
-                        //ByteBuffer.Wrap(bytes2).Order(ByteOrder.LittleEndian).AsShortBuffer().Put(buffer20ms);
+                        
                         await _fs.WriteAsync(audioBuffer, 0, samplesNumber);
                     }
                 }
@@ -202,6 +184,28 @@ namespace AppAngie
         }
         #endregion
 
+        #region ConvertBytesToShorts
+        /// <summary>
+        /// Converts the bytes to shorts. This is needed to calculate sound pressure out of audio buffer
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns>Array of shorts.</returns>
+        private short[] ConvertBytesToShorts(byte[] bytes)
+        {
+            var shorts = new short[bytes.Length / 2];
+
+            ByteBuffer.Wrap(bytes).Order(ByteOrder.LittleEndian).AsShortBuffer().Get(shorts);
+
+            return shorts;
+        }
+        #endregion
+
+        #region ProcessAudio
+        /// <summary>
+        /// Processes the audio frame and calculates sound pressure (dB).
+        /// </summary>
+        /// <param name="audioFrame">The audio frame.</param>
+        /// <returns></returns>
         private int ProcessAudio(short[] audioFrame)
         {
             // Compute the RMS value. (Note that this does not remove DC).
@@ -217,19 +221,19 @@ namespace AppAngie
             var rmsdB = 20.0 * Java.Lang.Math.Log10(_gain * _rmsSmoothed);
 
             DecimalFormat df = new DecimalFormat("##");
-            
+
 
             DecimalFormat df_fraction = new DecimalFormat("#");
             var oneDecimal = (int)(Java.Lang.Math.Round(Java.Lang.Math.Abs(rmsdB * 10))) % 10;
             
-
             var result = string.Format("{0}.{1} dB", df.Format(20 + rmsdB), oneDecimal);
 
             var c = Java.Lang.Math.Round((float)(20 + rmsdB));
-            _listener.ProcessContent(result, c > 45);
+            _listener.ProcessContent(result, ((c > 45) ? AnimationType.KissBack : AnimationType.None));
 
             return c;
-        }
+        } 
+        #endregion
         #endregion
         #endregion
 
@@ -252,8 +256,11 @@ namespace AppAngie
         // TODO: change to _isListening
         private bool _isRecording2 = false;
         private int _totalNumberOfSamples = 0;
+
+        private DateTime _recordingStartTime;
         private IProcessListener _listener;
-        private static string _filePath = "/storage/sdcard0/test.mp4";
+        private static string _filePath = "/data/data/App.Angie/files/audio.mp4";
+        //private static string _filePath = "/storage/sdcard0/test.mp4";
         private const string TAG = "AudioRecord";
         #endregion
     }
